@@ -21,6 +21,9 @@ export default {
       },
       fontFamily: {
         supakan: ["Oxanium", "sans-serif"]
+      },
+      flex: {
+        '2' : '1 0 100%'
       }
     },
   },

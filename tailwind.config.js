@@ -24,7 +24,22 @@ export default {
       },
       flex: {
         '2' : '1 0 100%'
+      },
+      keyframes: {
+        bubble : {
+          'from': {bottom: '-1000px'},
+          'to': {top: '-1000px'}
+        },
+        spin: {
+          'from' : {transform: 'rotate(0deg)'},
+          'to' : {transform: 'rotate(360deg)'}
+        }
+      },
+      animation: {
+        bubble: 'bubble 30s infinite',
+        spin: 'spin 30s linear infinite'
       }
+
     },
   },
   plugins: [],

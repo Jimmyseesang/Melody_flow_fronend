@@ -1,6 +1,7 @@
 import MusicBoxComponent from "../components/MusicBoxComponent"
 import NavBarComponent from "../components/NavBarComponent"
-import NavBarTestComponent from "../components/NavBarTestComponent"
+import CircleComponent from "../components/CircleComponent"
+
 
 const HomePage = () => {
 
@@ -12,9 +13,21 @@ const HomePage = () => {
         {id: 5, name: 'drunk', image: '/images/song/drunk.jpg', artist: 'keshi'},
     ]
 
+    const bubble = (index) => {
+        const component = []
+        for (let i = 0; i <= index; i++) {
+            component.push(<CircleComponent key={i} />)
+        }
+
+        return component
+    }
+
     return (
-        <div className="h-screen truncate bg-pinky-200" style={{overflowY: 'auto', scrollbarWidth: 'none'}}>
-            <NavBarTestComponent/>
+        <div className="h-screen bg-gradient-to-tr from-pink-500 to-black-100 truncate relative" style={{overflowY: 'auto', scrollbarWidth: 'none'}}>
+            <NavBarComponent/>
+            <div className="h-full w-full absolute blur-2xl bg-black-200/10 truncate">
+                {bubble(20)}
+            </div>
             <section className="h-screen lg:ml-[90px] lg:mt-0 mt-[90px]">
                 <div></div>
                 <div className="h-[500px] bg-black-100 relative">

@@ -9,7 +9,7 @@ const LeftMusicComponent = () => {
         <section className="h-full w-1/2 flex justify-center items-center">
             {/* upper */}
             <div className="bg-black-200/50 h-[700px] w-[500px] rounded-md p-8 relative flex flex-col justify-evenly border-2 border-white/20">
-                <div className="w-fit flex justify-center items-center relative bg-black-200/70 mx-auto p-1 rounded-full animate-spin">
+                <div className="w-fit flex justify-center items-center relative bg-black-200/70 mx-auto p-1 rounded-full animate-spin1">
                     <img src="/images/song/maybe.jpg" alt="music-image" className="h-[350px] aspect-square rounded-full" />
                     <div className="h-8 aspect-square bg-black-200/50 rounded-full absolute border-2 border-black-200 z-10"></div>
                     <div className="h-8 aspect-square bg-pink-900 rounded-full absolute"></div>

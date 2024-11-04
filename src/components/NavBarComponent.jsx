@@ -1,22 +1,77 @@
+import { useRef, useState } from "react"
+
 const NavBarComponent = () => {
-    return(
-        <div 
-            className="fixed bg-black-100 text-white w-full h-[5rem]
-            flex justify-between items-center xl:px-20 text-2xl
-            sm:px-8 truncate px-4 z-20
-            ">
-            <div className="flex flex-col h-full justify-evenly py-5 hover:cursor-pointer">
-                <div className="w-8 h-1 bg-white rounded"></div>
-                <div className="w-8 h-1 bg-white rounded"></div>
-                <div className="w-8 h-1 bg-white rounded"></div>
+
+    const [navbarSlide, setNavbarSlide] = useState(false)
+
+    const handleNavbar = () => {
+
+        setNavbarSlide(!navbarSlide)
+    }
+
+    return (
+        <div className="lg:h-screen lg:w-[90px] h-[90px] w-full fixed bg-black-200 z-30">
+            <div className="text-white w-full h-full flex lg:flex-col flex-row-reverse justify-between lg:justify-start lg:px-0 px-4 items-center absolute z-20 bg-black-200">
+                <div
+                    className="flex flex-col justify-center items-center lg:h-[10%] lg:w-full lg:p-0 lg:border-b border-white/20 
+                        hover:bg-white group transition-all duration-200 hover:cursor-pointer h-12 p-2 rounded-full lg:rounded-none lg:hidden block"
+                    onClick={handleNavbar}>
+                    <div className="w-8 h-1 bg-white rounded-full mb-1 group-hover:bg-black-200"></div>
+                    <div className="w-8 h-1 bg-white rounded-full mb-1 group-hover:bg-black-200"></div>
+                    <div className="w-8 h-1 bg-white rounded-full group-hover:bg-black-200"></div>
+                </div>
+                <div className="hidden lg:h-[98.094px] lg:w-full sm:flex items-center justify-center hover:bg-white hover:cursor-pointer lg:border-b lg:p-0 p-2 lg:mx-0 mx-8 lg:mr-0 lg:rounded-none rounded-full border-white/20 group transition-all duration-200">
+                    <div className="h-12 aspect-square bg-white rounded-full group-hover:bg-black-200 lg:group-hover:scale-150 duration-200"></div>
+                </div>
+                <div className="lg:hidden flex justify-center items-center text-2xl p-3 hover:cursor-pointer hover:bg-white hover:text-black-200 rounded-full sm:m-none mx-2">
+                    <i className="fa-solid fa-right-from-bracket"></i>
+                </div>
+                <div className="flex flex-col items-center lg:h-fit lg:w-full lg:block hidden">
+                    <a href="/">
+                        <div className="text-2xl py-6 hover:bg-white w-full text-center hover:text-black-200 hover:cursor-pointer transition-all duration-200 group"><i className="fa-solid fa-house group-hover:scale-150 duration-200"></i></div>
+                    </a>
+                    <a href="/like">
+                        <div className="text-2xl py-6 hover:bg-white w-full text-center hover:text-black-200 hover:cursor-pointer transition-all duration-200 group"><i className="fa-solid fa-heart group-hover:scale-150 duration-200 "></i></div>
+                    </a>
+                    <a href="/list">
+                        <div className="text-2xl py-6 hover:bg-white w-full text-center hover:text-black-200 hover:cursor-pointer transition-all duration-200 group"><i className="fa-solid fa-list group-hover:scale-150 duration-200"></i></div>
+                    </a>
+                    <a href="/register">
+                        <div className="text-2xl py-6 hover:bg-white w-full text-center hover:text-black-200 hover:cursor-pointer transition-all duration-200 group"><i className="fa-solid fa-right-from-bracket group-hover:scale-150 duration-200"></i></div>
+                    </a>
+                    <a href="/admin">
+                        <div className="text-2xl py-6 hover:bg-white w-full text-center hover:text-black-200 hover:cursor-pointer transition-all duration-200 group"><i className="fa-solid fa-toolbox group-hover:scale-150 duration-200"></i></div>
+                    </a>
+                </div>
+                <div className="grow flex items-end lg:mb-24 relative">
+                    <h1 className="lg:-rotate-[90deg] font-supakan sm:text-3xl tracking-wider text-xl hover:cursor-pointer">Melody <span className="text-pinky-200">flow</span></h1>
+                </div>
             </div>
-            <div className="flex items-center justify-end gap-8 w-5/6">
-                <form className="flex items-center sm:max-w-full max-w-12 grow justify-end">
-                    <input type="text" className="rounded-full h-12 md:min-w-64 md:max-w-[500px] min-w-12 w-full text-black-100 text-base px-4 sm:placeholder-current placeholder-transparent sm:placeholder-gray-400" placeholder='music...' />
-                    <button type="submit" className="text-black-100 -translate-x-9 w-0"><i className="fa-solid fa-magnifying-glass"></i></button>
-                </form>
-                <div className="h-12 aspect-square bg-white rounded-full"></div>
-                <div className="font-supakan hidden sm:block hover:cursor-pointer hover:bg-white/25 p-2 rounded-full">Melody<span className="text-pinky-500">Flow</span></div>
+            <div className={`lg:hidden bg-black-200 w-full flex flex-col items-center absolute z-10 translate-all duration-200 ${navbarSlide ? 'top-[90px]' : '-top-[270px]'}`}>
+                <a href="/" className="w-full">
+                    <div className="hover:bg-white w-full h-[90px] flex items-center justify-center text-2xl font-bold text-white hover:text-black-200 transition-all duration-200 hover:cursor-pointer">
+                        <span className="font-normal text-xl">Home</span>
+                        <i className="fa-solid fa-house ml-12"></i>
+                    </div>
+                </a>
+                <a href="/like" className="w-full">
+                    <div className="hover:bg-white w-full h-[90px] flex items-center justify-center text-2xl font-bold text-white hover:text-black-200 transition-all duration-200 hover:cursor-pointer">
+                        <span className="font-normal text-xl">Like</span>
+                        <i className="fa-solid fa-heart ml-12"></i>
+                    </div>
+                </a>
+                <a href="/list" className="w-full">
+                    <div className="hover:bg-white w-full h-[90px] flex items-center justify-center text-2xl font-bold text-white hover:text-black-200 transition-all duration-200 hover:cursor-pointer">
+                        <span className="font-normal text-xl">List</span>
+                        <i className="fa-solid fa-folder ml-12"></i>
+                    </div>
+                </a>
+                <a href="/admin" className="w-full">
+                    <div className="hover:bg-white w-full h-[90px] flex items-center justify-center text-2xl font-bold text-white hover:text-black-200 transition-all duration-200 hover:cursor-pointer">
+                        <span className="font-normal text-xl">Admin</span>
+                        <i className="fa-solid fa-toolbox ml-12"></i>
+                    </div>
+                </a>
             </div>
         </div>
     )

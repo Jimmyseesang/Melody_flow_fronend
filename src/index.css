@@ -10,3 +10,12 @@
     font-family: "Rubik", sans-serif;
 
 }
+
+@keyframes bubbleMove {
+    0% {
+        transform: translate(0, 0)
+    }
+    100% {
+        transform: translateY(-500px)
+    }
+}

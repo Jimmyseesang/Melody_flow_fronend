@@ -5,10 +5,15 @@ const AdminPage = () => {
 
     const [title, setTitle] = useState('')
     const [artist, setArtist] = useState('')
-    const [file, setFile] = useState('')
+    const [genre, setGenre] = useState('')
+    const [audio, setAudio] = useState('')
+    const [cover, setCover] = useState('')
+
     const [titleAlert, setTitleAlert] = useState(false)
     const [artistAlert, setArtistAlert] = useState(false)
-    const [fileAlert, setFileAlert] = useState(false)
+    const [genreAlert, setGenreAlert] = useState(false)
+    const [audioAlert, setAudioAlert] = useState(false)
+    const [coverAlert, setCoverAlert] = useState(false)
 
     const dataChack = () => {
 
@@ -23,10 +28,19 @@ const AdminPage = () => {
             setArtistAlert(true)
             status = false
         }
-        if(file === '' || null) {
-            setFileAlert(true)
+        if(genre === '' || null) {
+            setGenreAlert(true)
             status = false
         }
+        if(audio === '' || null) {
+            setAudioAlert(true)
+            status = false
+        }
+        if(cover === '' || null) {
+            setCoverAlert(true)
+            status = false
+        }
+
 
         return status
 
@@ -36,7 +50,7 @@ const AdminPage = () => {
 
         e.preventDefault()
         if(dataChack()) {
-            const formdata = {title, artist, file}
+            const formdata = {title, artist, audio}
             console.log(formdata)
         }
 
@@ -63,7 +77,7 @@ const AdminPage = () => {
                             <p className={`text-red-700 ${titleAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
                         </div>
                         <div className="flex flex-col my-4">
-                            <label htmlFor="artist" className="label-style">Artist <span className={`${artistAlert ? 'hidden' : ''}`}>alert</span></label>
+                            <label htmlFor="artist" className="label-style">Artist</label>
                             <input  
                                 type="text" 
                                 placeholder="artist..."
@@ -71,20 +85,41 @@ const AdminPage = () => {
                                 className="input-style"
                                 onChange={(e) => {setArtist(e.target.value)}}
                             />
-                            <p className={`text-red-700 ${titleAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
+                            <p className={`text-red-700 ${artistAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
                         </div>
                         <div className="flex flex-col my-4">
-                            <label htmlFor="music-file" className="label-style">File <span className={`${fileAlert ? 'hidden' : ''}`}>alert</span></label>
+                            <label htmlFor="genre" className="label-style">Genre</label>
+                            <input  
+                                type="text" 
+                                placeholder="genre..."
+                                id="genre"
+                                className="input-style"
+                                onChange={(e) => {setGenre(e.target.value)}}
+                            />
+                            <p className={`text-red-700 ${genreAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
+                        </div>
+                        <div className="flex flex-col my-4">
+                            <label htmlFor="music-file" className="label-style">File</label>
                             <input 
                                 type="file" 
                                 id="music-file"
                                 className="bg-white p-2 rounded text-pink-500 hover:cursor-pointer"
-                                onChange={(e) => {setFile(e.target.files[0])}}
+                                onChange={(e) => {setAudio(e.target.files[0])}}
                             />
-                            <p className={`text-red-700 ${titleAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
+                            <p className={`text-red-700 ${audioAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
+                        </div>
+                        <div className="flex flex-col my-4">
+                            <label htmlFor="cover-file" className="label-style">Cover file</label>
+                            <input 
+                                type="file" 
+                                id="cover-file"
+                                className="bg-white p-2 rounded text-pink-500 hover:cursor-pointer"
+                                onChange={(e) => {setCover(e.target.files[0])}}
+                            />
+                            <p className={`text-red-700 ${coverAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
                         </div>
                         <div className="flex justify-center items-center mt-8">
-                            <button className="bg-pink-600 p-3 rounded w-1/2 hover:bg-black-200 hover:text-pink-600 hover:border-2 border-pink-600" type="submit">Enter</button>
+                            <button className="bg-pink-600 p-3 rounded w-1/2 hover:bg-black-200 hover:text-pink-600 hover:border-2 border-pink-600 transition-all duration-[.5s]" type="submit">Enter</button>
                         </div>
                     </form>
                 </div>

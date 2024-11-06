@@ -19,3 +19,15 @@
         transform: translateY(-500px)
     }
 }
+
+.input-style {
+
+    @apply p-2 rounded outline-0 focus:outline-pink-500 outline-2 transition-all duration-200 text-black-200
+
+}
+
+.label-style {
+
+    @apply text-lg font-bold
+
+}

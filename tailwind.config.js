@@ -37,6 +37,18 @@ export default {
                 appear: {
                     'from' : {opacity: '0'},
                     'to' : {opacity: '1'}
+                },
+                alertBox: {
+                    '0%' : {right : '-24rem'},
+                    '30%' : {right : '6rem'},
+                    '60%' : {right : '0rem'},
+                    '100%' : {right: '2rem'}
+                },
+                alertBlack: {
+                    '0%' : {right : '2rem'},
+                    '30%' : {right : '0rem'},
+                    '60%' : {right : '4rem'},
+                    '100%' : {right : '-24rem'}
                 }
 
             },
@@ -44,7 +56,9 @@ export default {
                 spin: 'spin 1s linear infinite',
                 spin1: 'spin 30s linear infinite',
                 hide: 'hide 30s ease-in-out forwards',
-                appear: 'appear 1s linear forwards'
+                appear: 'appear 1s linear forwards',
+                alertBox: 'alertBox 400ms linear forwards',
+                alertBlack: 'alertBlack 300ms linear forwards'
             }
 
         },

@@ -4,6 +4,7 @@ import CircleComponent from "../components/CircleComponent"
 import axios from "axios"
 
 const apiHost = import.meta.env.VITE_SERVER_HOST
+const apiPort = import.meta.env.VITE_SERVER_PORT
 
 const RegisterPage = () => {
 
@@ -103,7 +104,7 @@ const RegisterPage = () => {
 
             try {
 
-                const response = await axios.post(`http://${apiHost}:3900/user/register`, data)
+                const response = await axios.post(`http://${apiHost}:${apiPort}/user/register`, data)
                 setElementHide(!elementHide)
                 resetRegisterData()
 
@@ -133,7 +134,7 @@ const RegisterPage = () => {
 
             try{
 
-                const response = await axios.post(`http://${apiHost}:3900/user/login`,data)
+                const response = await axios.post(`http://${apiHost}:${apiPort}/user/login`,data)
                 localStorage.setItem('token', response.data.token)
                 navigate('/')
 

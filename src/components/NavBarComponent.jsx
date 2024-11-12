@@ -39,7 +39,7 @@ const NavBarComponent = () => {
         try {
 
             const token = localStorage.getItem('token')
-            if(!token) {
+            if (!token) {
                 return setBottonLogOut(false)
             }
 
@@ -62,19 +62,21 @@ const NavBarComponent = () => {
     }, [])
 
     return (
-        <div className="lg:h-screen lg:w-[90px] h-[90px] w-full fixed bg-black-200 z-30">
+        <div className="lg:h-screen lg:w-[90px] h-[90px] w-full fixed bg-black-200 z-50">
             <div className="absolute z-20 flex flex-row-reverse items-center justify-between w-full h-full px-4 text-white lg:flex-col lg:justify-start lg:px-0 bg-black-200">
                 <div
-                    className="flex flex-col justify-center items-center lg:h-[10%] lg:w-full lg:p-0 lg:border-b border-white/20 hover:bg-white group transition-all duration-200 hover:cursor-pointer h-12 p-2 rounded-full lg:rounded-none lg:hidden block"
+                    className="flex flex-col justify-center items-center lg:h-[10%] lg:w-full lg:p-0 lg:border-b border-white/20 hover:bg-white group transition-all duration-200 hover:cursor-pointer h-12 p-2 rounded-full lg:rounded-none lg:hidden"
                     onClick={handleNavbar}>
                     <div className="w-8 h-1 mb-1 bg-white rounded-full group-hover:bg-black-200"></div>
                     <div className="w-8 h-1 mb-1 bg-white rounded-full group-hover:bg-black-200"></div>
                     <div className="w-8 h-1 bg-white rounded-full group-hover:bg-black-200"></div>
                 </div>
                 <div className="hidden lg:h-[98.094px] lg:w-full sm:flex items-center justify-center hover:bg-white hover:cursor-pointer lg:border-b lg:p-0 p-2 lg:mx-0 mx-8 lg:mr-0 lg:rounded-none rounded-full border-white/20 group transition-all duration-200">
-                    <div className="h-12 duration-200 bg-white rounded-full aspect-square group-hover:bg-black-200 lg:group-hover:scale-150"></div>
+                    <a href="/profile">
+                        <div className="h-12 duration-200 bg-white rounded-full aspect-square group-hover:bg-black-200 lg:group-hover:scale-150 bg-cover bg-center" style={{backgroundImage: 'url(../public/images/ghost-icon.jpg)'}}></div>
+                    </a>
                 </div>
-                <a href="/register" className={`lg:hidden flex justify-center items-center text-2xl p-3 hover:cursor-pointer hover:bg-white hover:text-black-200 rounded-full sm:m-none mx-2 ${bottonLogOut ? 'text-red-600' : 'text-green-400'}`} onClick={() => {bottonLogOut ? localStorage.removeItem('token') : ''}}>
+                <a href="/register" className={`lg:hidden flex justify-center items-center text-2xl p-3 hover:cursor-pointer hover:bg-white hover:text-black-200 rounded-full sm:m-none mx-2 ${bottonLogOut ? 'text-red-600' : 'text-green-400'}`} onClick={() => { bottonLogOut ? localStorage.removeItem('token') : '' }}>
                     <i className="fa-solid fa-right-from-bracket"></i>
                 </a>
                 <div className="flex flex-col items-center hidden lg:h-fit lg:w-full lg:block">
@@ -87,7 +89,7 @@ const NavBarComponent = () => {
                     <a href="/list">
                         <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-list group-hover:scale-150"></i></div>
                     </a>
-                    <a href="/register" onClick={() => {bottonLogOut ? localStorage.removeItem('token') : ''}}>
+                    <a href="/register" onClick={() => { bottonLogOut ? localStorage.removeItem('token') : '' }}>
                         <div className={`text-2xl py-6 hover:bg-white w-full text-center hover:cursor-pointer transition-all duration-200 group ${bottonLogOut ? 'text-red-600' : 'text-green-400'}`}><i className="duration-200 fa-solid fa-right-from-bracket group-hover:scale-150"></i></div>
                     </a>
                     {permission ? adminTool() : ''}

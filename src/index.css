@@ -31,3 +31,8 @@
     @apply text-lg font-bold
 
 }
+
+body, html {
+    overflow-y: auto;
+    scrollbar-width: none;
+}

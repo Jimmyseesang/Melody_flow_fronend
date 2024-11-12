@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import NavBarComponent from "../components/NavBarComponent"
 import axios from "axios"
+
 const apiHost = import.meta.env.VITE_SERVER_HOST
 const apiPort = import.meta.env.VITE_SERVER_PORT
 
@@ -19,9 +20,15 @@ const AdminPage = () => {
     const [genreAlert, setGenreAlert] = useState(false)
     const [audioAlert, setAudioAlert] = useState(false)
     const [coverAlert, setCoverAlert] = useState(false)
-    
+
     // alert box variable
     const [saveDataAlert, setSaveDataAlert] = useState(false)
+    const [deleteAlert, setDeleteAlert] = useState(false)
+
+    const [editStatus, setEditStatus] = useState(false)
+
+    // music data
+    const [music, setMusic] = useState([])
 
     const clearValue = () => {
 
@@ -61,6 +68,48 @@ const AdminPage = () => {
 
     }
 
+    const getAllMusic = async () => {
+
+        const response = await axios.get(`http://${apiHost}:${apiPort}/music/findAllMusic`)
+
+        setMusic(response.data.music)
+
+    }
+
+    const deleteMusic = async (id) => {
+
+        const token = localStorage.getItem('token')
+
+        const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteMusic/${id}`, {
+            headers: {
+                'authorization': `Bearer ${token}`,
+            }
+        })
+
+        if (response.status === 200) {
+            getAllMusic()
+            setDeleteAlert(true)
+            setTimeout(() => {
+                setDeleteAlert(false)
+            }, [1500])
+        }
+        else {
+            console.log('errr')
+        }
+
+
+    }
+
+    const editMusic = async (id) => {
+        const token = localStorage.getItem('token')
+        const response = await axios.patch(`http://${apiHost}:${apiPort}/admin/editMusic/${id}`, {
+            headers: {
+                authorization: `Bearer ${token}`
+            },
+        })
+    }
+
+
     const handleSubmit = async (e) => {
 
         e.preventDefault()
@@ -76,21 +125,25 @@ const AdminPage = () => {
 
             const response = await axios.post(`http://${apiHost}:${apiPort}/admin/addMusic`, formData, {
                 headers: {
-                    'Authorization' : `Bearer ${token}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'
                 }
             })
             clearValue()
-            if(response.status === 200) {
+            if (response.status === 200) {
+                getAllMusic()
                 setSaveDataAlert(true)
                 setTimeout(() => {
-                    setSaveDataAlert(false)     
-                },[1500])
+                    setSaveDataAlert(false)
+                }, [1500])
             }
         }
 
     }
 
+    useEffect(() => {
+        getAllMusic()
+    }, [])
 
     return (
         <div className="min-h-screen w-full bg-black-200/90 truncate">
@@ -100,8 +153,14 @@ const AdminPage = () => {
                     <div className="text-lg font-bold">Upload music success</div>
                 </div>
             </div>
+            <div className={`w-[350px] h-[100px] bg-black-200 top-8 -right-96 fixed rounded border-l-8 border-green-500 transition-all ${deleteAlert ? 'animate-alertBox' : 'animate-alertBlack'}`}>
+                <div className="text-green-500 flex justify-evenly items-center w-full h-full">
+                    <i className="fa-regular fa-circle-check text-4xl"></i>
+                    <div className="text-lg font-bolds">Delete music success</div>
+                </div>
+            </div>
             <NavBarComponent />
-            <section className="w-full lg:mt-0 mt-[150px] lg:mt-[90px]">
+            <section className="w-full h-screen lg:mt-0 mt-[150px] lg:mt-[90px]">
                 <div className="text-white mt-20">
                     <h1 className="text-center text-4xl font-bold text-pink-600">Admin</h1>
                 </div>
@@ -116,7 +175,7 @@ const AdminPage = () => {
                                 id="music-title"
                                 className="input-style"
                                 value={title}
-                                onFocus={() => {setTitleAlert(false)}}
+                                onFocus={() => { setTitleAlert(false) }}
                                 onChange={(e) => { setTitle(e.target.value) }}
                             />
                             <p className={`text-red-700 ${titleAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
@@ -130,7 +189,7 @@ const AdminPage = () => {
                                 id="artist"
                                 className="input-style"
                                 value={artist}
-                                onFocus={() => {setArtistAlert(false)}}
+                                onFocus={() => { setArtistAlert(false) }}
                                 onChange={(e) => { setArtist(e.target.value) }}
                             />
                             <p className={`text-red-700 ${artistAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
@@ -144,7 +203,7 @@ const AdminPage = () => {
                                 id="genre"
                                 className="input-style"
                                 value={genre}
-                                onFocus={() => {setGenreAlert(false)}}
+                                onFocus={() => { setGenreAlert(false) }}
                                 onChange={(e) => { setGenre(e.target.value) }}
                             />
                             <p className={`text-red-700 ${genreAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
@@ -156,7 +215,7 @@ const AdminPage = () => {
                                 type="file"
                                 id="music-file"
                                 className="bg-white p-2 rounded text-pink-500 hover:cursor-pointer"
-                                onFocus={() => {setAudioAlert(false)}}
+                                onFocus={() => { setAudioAlert(false) }}
                                 onChange={(e) => { setAudio(e.target.files[0]) }}
                             />
                             <p className={`text-red-700 ${audioAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
@@ -168,7 +227,7 @@ const AdminPage = () => {
                                 type="file"
                                 id="cover-file"
                                 className="bg-white p-2 rounded text-pink-500 hover:cursor-pointer"
-                                onFocus={() => {setCoverAlert(false)}}
+                                onFocus={() => { setCoverAlert(false) }}
                                 onChange={(e) => { setCover(e.target.files[0]) }}
                             />
                             <p className={`text-red-700 ${coverAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
@@ -177,6 +236,70 @@ const AdminPage = () => {
                             <button className="bg-pink-600 p-3 rounded w-1/2 hover:bg-black-200 hover:text-pink-600 hover:border-2 border-pink-600 transition-all duration-[.5s]" type="submit" >Enter</button>
                         </div>
                     </form>
+                </div>
+            </section>
+            <section className="w-full h-screen mt-36 flex justify-center items-center">
+                <div className=" w-[70%] flex flex-col justify-center items-center">
+                    <div className="mb-12">
+                        <h1 className="text-4xl font-bold text-white">Manage <i className="fa-solid fa-gear text-pink-600"></i></h1>
+                    </div>
+                    <div className="w-full max-h-[526px] truncate" style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
+                        <table className="w-full">
+                            <thead className="text-xl sticky top-0 bg-pink-600  text-black-200">
+                                <tr>
+                                    <th className="w-[25%] p-4">title</th>
+                                    <th className="w-[25%]">artist</th>
+                                    <th className="w-[5%]">gerne</th>
+                                    <th className="w-[10%]">Edit</th>
+                                    <th className="w-[10%]">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody className="text-base bg-white">
+                                {music.map((e, i) => {
+                                    return <tr className="w-full border-b" key={e._id}>
+                                        <td className="text-center border ">{e.title}</td>
+                                        <td className="text-center border">{e.artist}</td>
+                                        <td className="text-center border">{e.genre}</td>
+                                        <td className="p-2 border place-items-center ">
+                                            <button className="bg-blue-500 w-1/2 text-white py-2 px-8 rounded flex justify-center items-center hover:bg-blue-700" onClick={() => { setEditStatus(true) }}>edit</button>
+                                        </td>
+                                        <td className="text-center p-4 w-[10%] border">
+                                            <button className="px-8 py-2 bg-red-600 rounded text-white hover:bg-red-800" onClick={() => { deleteMusic(e._id) }}>delete</button>
+                                        </td>
+                                    </tr>
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className={`fixed w-full h-full bg-black-200/40 top-0 left-0 z-30 backdrop-blur transition-all duration-200 ${editStatus ? 'block' : 'hidden'}`}>
+                    <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-1/2 h-[70%] bg-black-200 roundedz-30 flex flex-col justify-center items-center rounded relative">
+                            <div className="absolute"></div>
+                            <div>
+                                <h1 className="text-4xl text-white font-bold"><span className="text-pink-600">E</span>dit</h1>
+                            </div>
+                            <div>
+                                <form>
+                                    <div className="flex flex-col py-4">
+                                        <label htmlFor="title-edit" className="text-white">Title</label>
+                                        <input type="text" className="bg-black-300 rounded text-black p-2" placeholder="title..." />
+                                    </div>
+                                    <div className="flex flex-col py-4">
+                                        <label htmlFor="title-edit" className="text-white">artist</label>
+                                        <input type="text" className="bg-black-300 rounded text-black p-2" placeholder="title..." />
+                                    </div>
+                                    <div className="flex flex-col py-4">
+                                        <label htmlFor="title-edit" className="text-white">genre</label>
+                                        <input type="text" className="bg-black-300 rounded text-black p-2" placeholder="title..." />
+                                    </div>
+                                    <div className="flex justify-center items-center">
+                                        <button type="submit" className="bg-pink-600 px-4 py-2 rounded">Enter</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>

@@ -6,6 +6,7 @@ import MusicPage from "./pages/MusicPage"
 import RegisterPage from "./pages/RegisterPage"
 import AdminPage from "./pages/AdminPage"
 import ProtectRoute from "./pages/ProtectRoute"
+import ProfilePage from "./pages/profilePage"
 
 const App = () => {
 
@@ -19,6 +20,7 @@ const App = () => {
             <Route element={<ProtectRoute/>} >
                 <Route path="/admin" element={<AdminPage/>} />
             </Route>
+            <Route path="/profile" element={<ProfilePage/>} />
         </Routes>
 
     )

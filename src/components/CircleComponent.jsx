@@ -4,7 +4,7 @@ const CircleComponent = () => {
     const height = Math.floor(Math.random() * 300);
     const startTop = Math.floor(Math.random() * 1280);
     const startRight = Math.floor(Math.random() * 1980);
-    const duration = Math.floor(Math.random() * (20000 - 10000 + 1)) + 60000
+    const duration = Math.floor(Math.random() * (2000 - 1000 + 1)) + 6000
 
     const animationStyle = {
         height: `${height}px`,

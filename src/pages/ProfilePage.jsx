@@ -1,46 +1,150 @@
+import { useEffect, useMemo, useRef, useState } from "react"
+import ReactCrop from "react-image-crop"
+import "react-image-crop/dist/ReactCrop.css";
+
 import NavBarComponent from "../components/NavBarComponent"
-import PlaylistBoxComponent from "../components/PlaylistBoxComponent"
+import CircleComponent from "../components/CircleComponent"
+import axios from "axios";
+import { redirect } from "react-router-dom";
+
+const apiHost = import.meta.env.VITE_SERVER_HOST
+const apiPort = import.meta.env.VITE_SERVER_PORT
+
 
 const ProfilePage = () => {
 
-    const titleList = [
-        {title: 'Like', image: '../public/images/test-wallpaper.jpg'},
-        {title: 'List1', image: '../public/images/test-wallpaper2.jpg'},
-        {title: 'List2', image: '../public/images/test-wallpaper3.jpg'},
-        {title: 'Like3', image: '../public/images/test-wallpaper2.jpg'},
-        {title: 'Like4', image: '../public/images/test-wallpaper.jpg'},
-        {title: 'Like5', image: '../public/images/test-wallpaper2.jpg'},
-        {title: 'Like6', image: '../public/images/test-wallpaper3.jpg'},
-    ]
+    const bubble = (index) => {
+        const component = []
+        for (let i = 0; i <= index; i++) {
+            component.push(<CircleComponent key={i} />)
+        }
+
+        return component
+    }
+
+    const bubbles = useMemo(() => bubble(20), [])
+
+    const [pfHover, setPfHover] = useState(false)
+    const [imgSrc, setImgSrc] = useState('')
+    const imageInput = useRef(null)
+
+    const uploadImage = () => {
+        imageInput.current.click()
+    }
+
+    const onSelectFile = (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+
+        const reader = new FileReader()
+        reader.addEventListener("load", () => {
+            const imageUrl = reader.result.toString()
+            setImgSrc(imageUrl)
+        })
+
+        reader.readAsDataURL(file)
+    }
+
+    const ASPECT_RATIO = 1;
+    const MIN_DIMENSION = 150;
+
+
+    const [crop, setCrop] = useState({
+        unit: 'px',
+        width: MIN_DIMENSION,
+        aspect: ASPECT_RATIO
+    })
+
+    const onImageLoad = (e) => {
+
+        const { width, height } = e.currentTarget
+
+        setCrop((prevCrop) => ({
+            ...prevCrop,
+            width: Math.min(width, MIN_DIMENSION),
+            height: Math.max(width, MIN_DIMENSION),
+            x: (width - MIN_DIMENSION) / 2,
+            y: (height - MIN_DIMENSION) / 2
+        }))
+
+    }
+
+    const [profile, setProfile] = useState({})
+
+    useEffect(() => {
+        const getProfile = async () => {
+            const token = localStorage.getItem('token')
+            if(!token) {
+                redirect('/')
+            }
+            const response = await axios.get(`http://${apiHost}:${apiPort}/user/getProfile`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            const profile = response.data.user
+            console.log(profile)
+            setProfile({
+                image: profile.image || '../public/images/user-image.png',
+                name: profile.name || 'null',
+                email: profile.email || 'null',
+                date: profile.date || 'null'
+            })
+
+            setUsername(profile.name || 'null')
+            setEmail(profile.email || 'null')
+            setDate(profile.date || 'null')
+        }
+
+        getProfile()
+
+    },[])
+
+    const [inputUsername, setInputUsername] = useState(false)
+    const [inputEmail, setinputEmail] = useState(false)
+    const [inputDate, setInputDate] = useState(false)
+    
+    const [username, setUsername] = useState('null')
+    const [email, setEmail] = useState('null')
+    const [date, setDate] = useState('null')
     
     return (
-        <div className="min-h-screen w-full bg-black-200 bg-gradient-to-br from-10% via-pink-600 from-black-200 to-pink-300 flex flex-col lg:flex-row truncate" style={{overflowY: 'auto', scrollbarWidth: 'none'}}>
+        <div className="min-h-screen w-full bg-black-200 bg-gradient-to-br from-10% via-pink-600 from-black-200 to-pink-300 flex flex-col lg:flex-row truncate overflow-hidden" style={{ overflowY: 'auto', scrollbarWidth: 'none' }}>
             <NavBarComponent />
-            <section className="lg:w-1/2 lg:h-screen h-screen w-full relative lg:ml-[90px] truncate">
-                <div className="2xl:h-80 sm:h-64 h-44 aspect-square bg-white rounded-full absolute top-[30%] right-1/2 translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-cover bg-center hover:scale-110 hover:cursor-pointer transition-all" style={{ backgroundImage: 'url(../public/images/ghost-icon.jpg)' }}></div>
+            <div className="absolute h-full w-full background-black-200 blur-xl truncate">
+                {bubbles}
+            </div>
+            <section className="lg:w-full lg:h-screen h-screen w-full relative lg:ml-[90px] truncate">
+                <div className="2xl:h-80 sm:h-64 h-44 aspect-square bg-white rounded-full absolute top-[30%] right-1/2 translate-x-1/2 -translate-y-1/2 flex justify-center items-center bg-cover bg-center hover:scale-110 hover:cursor-pointer transition-all z-20" style={{ backgroundImage: `url(${profile.image})` }} onMouseEnter={() => { setPfHover(true) }} onMouseLeave={() => { setPfHover(false) }} onClick={uploadImage}>
+                    <div className={`h-full aspect-square bg-white rounded-full ${pfHover ? ' bg-opacity-50' : 'bg-opacity-0'} truncate flex items-end hover:cursor-pointer transition-all duration-200`}>
+                        <div className={`w-full h-1/3 bg-black-200/50 flex items-center justify-center hover:cursor-pointer rounded-b-full transition-all duration-200 ${pfHover ? 'opacity-100' : 'opacity-0'}`}>select image</div>
+                    </div>
+                    <input type="file" className="hidden" ref={imageInput} onChange={onSelectFile} />
+                </div>
                 <div className="w-[70%] sm:min-w-[400px] min-w-[300px] h-1/2 bg-white/10 absolute top-[60%] right-1/2 translate-x-1/2 -translate-y-1/2 rounded p-16 flex items-center flex-col">
                     <div className="sm:mt-16 mt-4">
-                        <h1 className="text-4xl font-bold text-white    ">Jimmy Seesang</h1>
+                        <h1 className="text-4xl font-bold text-white first-letter:uppercase">{profile.name}</h1>
                     </div>
                     <div>
-                        <p className="text-white/70">@Jimmyseesang</p>
+                        <p className="text-white/70">@{profile.name}</p>
                     </div>
                     <table className="xl:w-[400px] w-[350px] h-[200px] text-white mt-4 hidden sm:table">
                         <tbody>
                             <tr>
                                 <td className="font-bold text-lg">Username</td>
-                                <td>Jimmy seesang</td>
-                                <td><i className="fa-solid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
+                                <td>{inputUsername ? <input type="text" className="outline-none bg-white/50 rounded p-2" value={username} onChange={(e) => {setUsername(e.target.value)}} /> : profile.name} </td>
+                                <td onClick={() => setInputUsername(!inputUsername)}><i className="fa-solid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
                             </tr>
                             <tr>
                                 <td className="font-bold text-lg">Email</td>
-                                <td>Jimmyseesang@gmail.com</td>
-                                <td><i className="fa-solid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
+                                <td>{inputEmail ? <input type="text" className="outline-none bg-white/50 rounded p-2" value={email} onChange={(e) => {setEmail(e.target.value)}}/> : profile.email}</td>
+                                <td onClick={() => setinputEmail(!inputEmail)}><i className="fa-solid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
                             </tr>
                             <tr>
                                 <td className="font-bold text-lg">Date</td>
-                                <td>26 February 2005</td>
-                                <td><i className="fa-solid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
+                                <td>{inputDate ? <input type="text" className="outline-none bg-white/50 rounded p-2" value={date} onChange={(e) => {setDate(e.target.value)}}/> : profile.date}</td>
+                                <td onClick={() => setInputDate(!inputDate)}><i className="fa-solid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
                             </tr>
                         </tbody>
                     </table>
@@ -65,21 +169,20 @@ const ProfilePage = () => {
                             </tr>
                             <tr>
                                 <td>26 February 2005</td>
-                                <td><i className="fa-solid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
+                                <td><i className="fa-sjolid fa-pen-to-square p-2 hover:cursor-pointer hover:text-white/50"></i></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </section>
-            <section className="lg:w-1/2 lg:h-screen w-full h-screen flex lg:flex-col bg-white/10 border-l border-white/25 flex-col">
-                <div className="w-full h-[10%] flex justify-center items-center lg:my-0 my-16">
-                    <h1 className="text-white text-4xl font-bold border p-4 rounded-full">Playlist</h1>
-                </div>
-                <div className="w-full h-[90%] px-16 py-2 overflow-y-auto overflow-visible flex flex-wrap justify-center gap-[36px]" style={{ scrollbarWidth: 'none' }}>
-                    {titleList.map((e,i) => {
-                        return <PlaylistBoxComponent key={i} {...e} />
-                    })}
-                </div>
+                {imgSrc && (
+                    <div className="w-full h-full bg-black-200/50">
+                        <div className="flex flex-col items-center absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 z-30">
+                            <ReactCrop crop={crop} onChange={(newCrop) => setCrop(newCrop)} aspect={ASPECT_RATIO} circularCrop>
+                                <img src={imgSrc} className="max-h-[700px]" alt="Upload img" onLoad={onImageLoad} />
+                            </ReactCrop>
+                        </div>
+                    </div>
+                )}
             </section>
         </div>
     )

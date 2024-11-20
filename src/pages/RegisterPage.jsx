@@ -47,6 +47,11 @@ const RegisterPage = () => {
         setRegisPassword('')
     }
 
+    const resetLoginData = () => {
+        setLoginEmail('')
+        setLoginPassword('')
+    }
+
     const chackRegisData = () => {
 
         let isValid = true
@@ -227,6 +232,9 @@ const RegisterPage = () => {
                                 onClick={() => { 
                                     setElementHide(!elementHide)
                                     resetRegisterData()
+                                    setAlertRegisPassword(false)
+                                    setAlertName(false)
+                                    setAlertRegisEmail(false)
                                  }}
                                 className="ml-2 hover:text-pink-600 transition-all duration-200 hover:cursor-pointer"
                             >
@@ -279,7 +287,11 @@ const RegisterPage = () => {
                         <p className="flex">
                             Don't have an account?
                             <span
-                                onClick={() => { setElementHide(!elementHide); }}
+                                onClick={() => { 
+                                    setElementHide(!elementHide); 
+                                    resetLoginData()
+                                    setAlertLoginEmail(false)
+                                }}
                                 className="ml-2 hover:text-black-200 transition-all duration-200 hover:cursor-pointer"
                             >
                                 Sign up <i className="fa-solid fa-right-to-bracket"></i>

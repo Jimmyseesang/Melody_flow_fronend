@@ -33,13 +33,13 @@ const ProtectRoute = () => {
             setPermission(false)
         }
 
-    })
+    },[])
 
     if(permission === null) {
         return <></>
     }
 
-    return permission ? <Outlet/> : <Navigate to={'/'}/>
+    return permission ? <Outlet/> : <Navigate to={'/*'}/>
 
 }
 

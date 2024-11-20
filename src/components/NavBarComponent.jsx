@@ -9,6 +9,7 @@ const NavBarComponent = () => {
     const [navbarSlide, setNavbarSlide] = useState(false)
     const [permission, setPermission] = useState(false)
     const [bottonLogOut, setBottonLogOut] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const handleNavbar = () => {
 
@@ -54,15 +55,21 @@ const NavBarComponent = () => {
         }
         catch (err) {
             console.log('Error fetching permission', err)
+        } finally {
+            setLoading(false)
         }
     }
 
     useEffect(() => {
+        const token = localStorage.getItem('token')
+        setBottonLogOut(!!token)
+
         adminBox()
     }, [])
 
     return (
-        <div className="lg:h-screen lg:w-[90px] h-[90px] w-full fixed bg-black-200 z-50">
+        <div className="lg:h-screen lg:w-[90px] h-[90px] w-full fixed bg-black-200 z-50 left-0">
+            {/* Side bar */}
             <div className="absolute z-20 flex flex-row-reverse items-center justify-between w-full h-full px-4 text-white lg:flex-col lg:justify-start lg:px-0 bg-black-200">
                 <div
                     className="flex flex-col justify-center items-center lg:h-[10%] lg:w-full lg:p-0 lg:border-b border-white/20 hover:bg-white group transition-all duration-200 hover:cursor-pointer h-12 p-2 rounded-full lg:rounded-none lg:hidden"
@@ -79,30 +86,37 @@ const NavBarComponent = () => {
                 <a href="/register" className={`lg:hidden flex justify-center items-center text-2xl p-3 hover:cursor-pointer hover:bg-white hover:text-black-200 rounded-full sm:m-none mx-2 ${bottonLogOut ? 'text-red-600' : 'text-green-400'}`} onClick={() => { bottonLogOut ? localStorage.removeItem('token') : '' }}>
                     <i className="fa-solid fa-right-from-bracket"></i>
                 </a>
-                <div className="flex flex-col items-center hidden lg:h-fit lg:w-full lg:block">
+                <div className="hidden lg:h-[650px] lg:w-full lg:flex flex-col justify-start">
                     <a href="/">
                         <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-house group-hover:scale-150"></i></div>
-                    </a>
-                    <a href="/like">
-                        <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-heart group-hover:scale-150 "></i></div>
                     </a>
                     <a href="/list">
                         <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-list group-hover:scale-150"></i></div>
                     </a>
-                    <a href="/register" onClick={() => { bottonLogOut ? localStorage.removeItem('token') : '' }}>
-                        <div className={`text-2xl py-6 hover:bg-white w-full text-center hover:cursor-pointer transition-all duration-200 group ${bottonLogOut ? 'text-red-600' : 'text-green-400'}`}><i className="duration-200 fa-solid fa-right-from-bracket group-hover:scale-150"></i></div>
+                    <a href="/like">
+                        <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-heart group-hover:scale-150"></i></div>
                     </a>
                     {permission ? adminTool() : ''}
+                    <a href="/register" onClick={() => { bottonLogOut ? localStorage.removeItem('token') : '' }}>
+                        <div className={`text-2xl py-6 hover:bg-white w-full text-center hover:cursor-pointer transition-all duration-200 group text-green-400 ${loading ? 'text-white' : bottonLogOut ? 'text-red-600' : 'text-green-400'}`}><i className="duration-200 fa-solid fa-right-from-bracket group-hover:scale-150"></i></div>
+                    </a>
                 </div>
                 <div className="relative flex items-end grow lg:mb-24">
                     <h1 className="lg:-rotate-[90deg] font-supakan sm:text-3xl tracking-wider text-xl hover:cursor-pointer">Melody <span className="text-pinky-200">flow</span></h1>
                 </div>
             </div>
+            {/* Navbar */}
             <div className={`lg:hidden bg-black-200 w-full flex flex-col items-center absolute z-10 translate-all duration-200 ${navbarSlide ? 'top-[90px]' : '-top-[360px]'}`}>
                 <a href="/" className="w-full">
                     <div className="hover:bg-white w-full h-[90px] flex items-center justify-center text-2xl font-bold text-white hover:text-black-200 transition-all duration-200 hover:cursor-pointer">
                         <span className="text-xl font-normal">Home</span>
                         <i className="ml-12 fa-solid fa-house"></i>
+                    </div>
+                </a>
+                <a href="/profile" className="w-full">
+                    <div className="hover:bg-white w-full h-[90px] flex items-center justify-center text-2xl font-bold text-white hover:text-black-200 transition-all duration-200 hover:cursor-pointer">
+                        <span className="text-xl font-normal">Profile</span>
+                        <i className="fa-solid fa-user ml-12"></i>
                     </div>
                 </a>
                 <a href="/like" className="w-full">

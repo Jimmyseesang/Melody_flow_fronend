@@ -1,7 +1,7 @@
 import CircleComponent from "../components/CircleComponent"
-import LeftMusicComponent from "../components/LeftMusicComponent"
+import LeftMusicComponent from "../components/musicPageComponents/LeftMusicComponent"
 import NavBarComponent from "../components/NavBarComponent"
-import RightMusicComponent from "../components/RightMusicComponent"
+import RightMusicComponent from "../components/musicPageComponents/RightMusicComponent"
 
 const MusicPage = (props) => {
 
@@ -17,13 +17,15 @@ const MusicPage = (props) => {
     }
 
     return (
-        <div className="bg-gradient-to-tr from-pink-500 to-black-100 h-screen w-full flex flex-row truncate relative">
+        <div className="bg-gradient-to-tr from-pink-500 to-black-100 min-h-screen h-full w-full flex flex-row justify-end truncate relative">
             <NavBarComponent />
             <div className="h-full w-full absolute blur-2xl bg-black-200/10">
                 {bubble(20)}
             </div>
-            <LeftMusicComponent/>
-            <RightMusicComponent/>
+            <div className="lg:h-screen h-full lg:w-[95.37%] w-full z-10 flex lg:flex-row flex-col">
+                <LeftMusicComponent />
+                <RightMusicComponent />
+            </div>
         </div>
     )
 

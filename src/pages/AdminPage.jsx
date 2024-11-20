@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
-import NavBarComponent from "../components/NavBarComponent"
 import axios from "axios"
+import { Slide, ToastContainer, toast } from "react-toastify"
+
+import NavBarComponent from "../components/NavBarComponent"
 
 const apiHost = import.meta.env.VITE_SERVER_HOST
 const apiPort = import.meta.env.VITE_SERVER_PORT
@@ -21,10 +23,6 @@ const AdminPage = () => {
     const [audioAlert, setAudioAlert] = useState(false)
     const [coverAlert, setCoverAlert] = useState(false)
 
-    // alert box variable
-    const [saveDataAlert, setSaveDataAlert] = useState(false)
-    const [deleteAlert, setDeleteAlert] = useState(false)
-
     const [editStatus, setEditStatus] = useState(false)
 
     // music data
@@ -36,6 +34,21 @@ const AdminPage = () => {
         setArtist('')
         setGenre('')
 
+    }
+
+    // toast
+    const alert = (message) => {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Slide,
+        });
     }
 
     const dataChack = () => {
@@ -88,10 +101,7 @@ const AdminPage = () => {
 
         if (response.status === 200) {
             getAllMusic()
-            setDeleteAlert(true)
-            setTimeout(() => {
-                setDeleteAlert(false)
-            }, [1500])
+            alert('Delete music success')
         }
         else {
             console.log('errr')
@@ -132,10 +142,7 @@ const AdminPage = () => {
             clearValue()
             if (response.status === 200) {
                 getAllMusic()
-                setSaveDataAlert(true)
-                setTimeout(() => {
-                    setSaveDataAlert(false)
-                }, [1500])
+                alert('Add music success')
             }
         }
 
@@ -147,19 +154,8 @@ const AdminPage = () => {
 
     return (
         <div className="min-h-screen w-full bg-black-200/90 truncate">
-            <div className={`w-[350px] h-[100px] bg-black-200 top-8 -right-96 fixed rounded border-l-8 border-green-500 transition-all ${saveDataAlert ? 'animate-alertBox' : 'animate-alertBlack'}`}>
-                <div className="text-green-500 flex justify-evenly items-center w-full h-full">
-                    <i className="fa-regular fa-circle-check text-4xl"></i>
-                    <div className="text-lg font-bold">Upload music success</div>
-                </div>
-            </div>
-            <div className={`w-[350px] h-[100px] bg-black-200 top-8 -right-96 fixed rounded border-l-8 border-green-500 transition-all ${deleteAlert ? 'animate-alertBox' : 'animate-alertBlack'}`}>
-                <div className="text-green-500 flex justify-evenly items-center w-full h-full">
-                    <i className="fa-regular fa-circle-check text-4xl"></i>
-                    <div className="text-lg font-bolds">Delete music success</div>
-                </div>
-            </div>
             <NavBarComponent />
+            <ToastContainer/>
             <section className="w-full h-screen lg:mt-0 mt-[150px] lg:mt-[90px]">
                 <div className="text-white mt-20">
                     <h1 className="text-center text-4xl font-bold text-pink-600">Admin</h1>

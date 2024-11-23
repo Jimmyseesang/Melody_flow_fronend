@@ -2,10 +2,12 @@ import NavBarComponent from "../components/NavBarComponent"
 import CircleComponent from "../components/CircleComponent"
 import MusicListComponent from "../components/MusicListComponent"
 import PlaylistBoxComponent from "../components/PlaylistBoxComponent"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useContext } from "react"
 import MusicBoxComponent from "../components/ArtistBoxComponent"
 import ArtistBoxComponent from "../components/ArtistBoxComponent"
 import axios from "axios"
+import { ProfileContext } from "../contexts/ProfileContext"
+import { MusicContext, MusicProvider } from "../contexts/MusicContext"
 
 
 const HomePage = () => {
@@ -18,27 +20,6 @@ const HomePage = () => {
 
         return component
     }
-
-    const musicList = [
-        { title: 'Just the two of us', artist: 'Bill Withers', image: '../public/images/test-wallpaper.jpg' },
-        { title: 'maybe?', artist: 'RADi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'her', artist: 'JVKE', image: '../public/images/test-wallpaper.jpg' },
-        { title: 'this is what autumn feels like', artist: 'JVKE', image: '../public/images/test-wallpaper3.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper3.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-        { title: 'drunk', artist: 'keshi', image: '../public/images/test-wallpaper2.jpg' },
-
-    ]
 
     const artistList = [
         { imgUrl: '../public/images/three-man-down-group.jpg', artistName: 'Three Man Down' },
@@ -75,6 +56,17 @@ const HomePage = () => {
         return sliceList
     }
 
+    const { fetchProfile, token, setToken, apiHost, apiPort } = useContext(ProfileContext)
+    const { musics } = useContext(MusicContext)
+
+    useEffect(() => {
+        setToken(localStorage.getItem('token'))
+        if (token) {
+            fetchProfile()
+        }
+    }, [token, musics])
+
+
     return (
         <div className="min-h-screen h-full bg-gradient-to-tr from-pink-500 to-black-100 relative truncate" style={{ overflowY: 'auto', scrollbarWidth: 'none' }}>
             <NavBarComponent />
@@ -91,9 +83,7 @@ const HomePage = () => {
                         <div className="bg-black-200/50 md:h-full md:w-1/3 md:min-w-[400px] min-w-[250px] w-full flex flex-col justify-between items-center rounded-lg">
                             <h1 className="text-center text-4xl font-bold text-white p-4 w-full bg-black-200 rounded-t-lg"><span className="text-pink-500">M</span>usic</h1>
                             <div className="h-full w-full flex flex-col truncate scroll-smooth scrollbarCustom overflow-y-auto" style={{ overflowY: 'auto' }}>
-                                {musicList.map((e, i) => {
-                                    return <MusicListComponent {...e} index={i} key={i} option={false} />
-                                })}
+                                {musics.length > 0 && (musics.map((e, i) => {return <MusicListComponent {...e} image={`http://${apiHost}:${apiPort}/musicImg/${e.coverUrl}`} id={e._id}  index={i} key={i} option={false}/>}))}
                             </div>
                         </div>
                         {/* section two */}

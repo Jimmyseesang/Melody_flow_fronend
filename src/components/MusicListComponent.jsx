@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MusicListComponent = (props) => {
 
-    const { title, artist, image, option} = props
+    const navigate = useNavigate()
+
+    const { title, artist, image, option, id} = props
 
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div className={`w-full md:min-h-[76px] md:h-[76px] min-h-[65px] h-[65px] flex text-white hover:cursor-pointer transition-all duration-200 justify-between ${isHovered && 'bg-black-200'}`}>
+        <div className={`w-full md:min-h-[76px] md:h-[76px] min-h-[65px] h-[65px] flex text-white hover:cursor-pointer transition-all duration-200 justify-between ${isHovered && 'bg-black-200'}`} onClick={() => {navigate(`/music/${id}`)}} >
             <div className="h-full aspect-square flex justify-center items-center p-2">
                 <div className="h-full aspect-square bg-cover bg-center rounded bg-white" style={{backgroundImage: `url(${image})`}}></div>
             </div>

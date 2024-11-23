@@ -1,5 +1,6 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
+import { ProfileContext } from "../contexts/ProfileContext"
 
 const apiHost = import.meta.env.VITE_SERVER_HOST
 const apiPort = import.meta.env.VITE_SERVER_PORT
@@ -59,13 +60,19 @@ const NavBarComponent = () => {
             setLoading(false)
         }
     }
+    const {profileImg, token, setToken, fetchProfile} = useContext(ProfileContext)
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
+        setToken(localStorage.getItem('token'))
+        if(token) {
+            fetchProfile()
+        }
+        setBottonLogOut(false)
         setBottonLogOut(!!token)
 
         adminBox()
-    }, [])
+    }, [token])
+
 
     return (
         <div className="lg:h-screen lg:w-[90px] h-[90px] w-full fixed bg-black-200 z-50 left-0">
@@ -80,7 +87,7 @@ const NavBarComponent = () => {
                 </div>
                 <div className="hidden lg:h-[98.094px] lg:w-full sm:flex items-center justify-center hover:bg-white hover:cursor-pointer lg:border-b lg:p-0 p-2 lg:mx-0 mx-8 lg:mr-0 lg:rounded-none rounded-full border-white/20 group transition-all duration-200">
                     <a href="/profile">
-                        <div className="h-12 duration-200 bg-white rounded-full aspect-square group-hover:bg-black-200 lg:group-hover:scale-150 bg-cover bg-center" style={{backgroundImage: 'url(../public/images/ghost-icon.jpg)'}}></div>
+                        <div className="h-12 duration-200 bg-white rounded-full aspect-square group-hover:bg-black-200 lg:group-hover:scale-150 bg-cover bg-center" style={{backgroundImage: `url(${profileImg})`}}></div>
                     </a>
                 </div>
                 <a href="/register" className={`lg:hidden flex justify-center items-center text-2xl p-3 hover:cursor-pointer hover:bg-white hover:text-black-200 rounded-full sm:m-none mx-2 ${bottonLogOut ? 'text-red-600' : 'text-green-400'}`} onClick={() => { bottonLogOut ? localStorage.removeItem('token') : '' }}>

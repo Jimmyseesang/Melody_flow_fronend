@@ -1,16 +1,18 @@
-const LeftMusicComponent = () => {
+import { useContext } from "react"
+import { ProfileContext } from "../../contexts/ProfileContext"
 
-    const id = 5
-    const name = 'maybe?'
-    const image = '/images/song/maybe.jpg'
-    const artist = 'RADi'
+const LeftMusicComponent = (props) => {
+
+    const {music} = props
+
+    const {apiHost, apiPort} = useContext(ProfileContext)
 
     return (
         <div className="lg:w-1/2 lg:h-full h-screen p-16 flex items-center justify-center mt-12 lg:mt-0">
             <div className="w-full max-w-[650px] min-w-[300px] h-full bg-white/25 backdrop-blur-2xl rounded-2xl border p-4">
                 {/* CD */}
                 <div className="w-full h-2/3 flex items-center justify-center relative p-4">
-                    <div className="w-[60%] md:min-w-[300px] min-w-[200px] aspect-square rounded-full bg-center bg-cover border-2 border-black-200 relative animate-spin1" style={{ backgroundImage: `url(${image})` }}>
+                    <div className="w-[60%] md:min-w-[300px] min-w-[200px] aspect-square rounded-full bg-center bg-cover border-2 border-black-200 relative animate-spin1" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${music.coverUrl})` }}>
                         <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-pink-600 h-8 aspect-square rounded-full"></div>
                         <div className="absolute top-1/2 right-1/2 translate-x-1/2 -translate-y-1/2 bg-white/40 h-8 aspect-square rounded-full border-2 border-black-200"></div>
                     </div>
@@ -24,8 +26,8 @@ const LeftMusicComponent = () => {
                 {/* content */}
                 <div className="w-full h-1/3 bg-white/50 rounded-xl flex flex-col p-4 justify-between">
                     <div className="flex flex-col items-center w-full">
-                        <h1 className="text-2xl font-bold">{name}</h1>
-                        <p className="text-base">{artist}</p>
+                        <h1 className="text-2xl font-bold">{music.title}</h1>
+                        <p className="text-base">{music.artist}</p>
                     </div>
                     <div className="w-full flex justify-center items-end gap-4">
                         <div className="flex h-10 aspect-square bg-black-200 justify-center items-center text-white rounded-full text-xl hover:text-pink-600 hover:cursor-pointer transition-all duration-all">

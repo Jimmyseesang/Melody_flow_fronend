@@ -1,27 +1,19 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ToastContainer, toast, Slide } from "react-toastify"
 
 const TestPage = () => {
 
-    const alert = () => {
-        toast.success('🦄 Wow so easy!', {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            transition: Slide,
-        });
-    }
+    const testRef = useRef(null)
 
+    const handleClick = (e) => {
+        console.log('Client Y : ',e.clientY)
+        console.log('GetBounding : ',testRef.current.getBoundingClientRect().top)
+    }
+    
     return (
-        <div className="w-full h-screen bg-black-200">
-            <button className="bg-white p-4" onClick={alert}>Click</button>
-            <ToastContainer />
+        <div className="w-full h-screen bg-black-200 text-9xl text-white font-bold flex items-center justify-center">
+            <div className="h-full w-6 rounded-full bg-white m-auto hover:cursor-pointer" ref={testRef} onClick={handleClick}></div>
         </div>
     )
 

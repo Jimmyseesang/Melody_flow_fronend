@@ -26,7 +26,7 @@ export const MusicProvider = ({ children }) => {
     }, [])
 
     return (
-        <MusicContext.Provider value={{ musics }}>
+        <MusicContext.Provider value={{ musics, getAllMusic, setMusics }}>
             {children}
         </MusicContext.Provider>
     )

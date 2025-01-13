@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 
 import "react-toastify/dist/ReactToastify.css";
+
 // import Page
 import HomePage from "./pages/HomePage"
 import TestPage from "./pages/TestPage"
@@ -15,6 +16,7 @@ import PageNotFound from "./pages/PageNotFound"
 import ProtectLogin from "./pages/ProtectLogin";
 import { ProfileProvider } from "./contexts/ProfileContext";
 import { MusicProvider } from "./contexts/MusicContext";
+import ArtistEditPage from "./pages/ArtistEditPage";
 
 const App = () => {
 
@@ -25,14 +27,18 @@ const App = () => {
                 <Routes>
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/music/:id" element={<MusicPage />} />
                     <Route element={<ProtectRoute />} >
                         <Route path="/admin" element={<AdminPage />} />
+                        <Route path="/admin/editArtist/:artistId" element={<ArtistEditPage/>} />
                     </Route>
                     <Route element={<ProtectLogin />}>
                         <Route path="/profile" element={<ProfilePage />} />
                         <Route path="/list" element={<PlaylistPage />} />
                         <Route path="/like" element={<LikePage />} />
+                        <Route path="/music/:musicId" element={<MusicPage />} />
+                        <Route path="/list/:playlistId/:musicId" element={<MusicPage/>}/>
+                        <Route path="/like/:musicId" element={<MusicPage/>}/>
+                        <Route path="/artistMusic/:artistId/:musicId" element={<MusicPage/>}/>
                     </Route>
                     <Route path="/*" element={<PageNotFound />} />
                     <Route path="/test" element={<TestPage />} />

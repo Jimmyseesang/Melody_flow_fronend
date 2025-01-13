@@ -3,11 +3,14 @@ import LeftMusicComponent from "../components/musicPageComponents/LeftMusicCompo
 import NavBarComponent from "../components/NavBarComponent"
 import RightMusicComponent from "../components/musicPageComponents/RightMusicComponent"
 import axios from "axios"
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState, useMemo } from "react"
 import { ProfileContext } from "../contexts/ProfileContext"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { MusicContext } from "../contexts/MusicContext"
+import { Slide, ToastContainer, toast } from "react-toastify"
 
-const MusicPage = (props) => {
+
+const MusicPage = () => {
 
     const bubble = (index) => {
         const component = []
@@ -18,29 +21,177 @@ const MusicPage = (props) => {
         return component
     }
 
-    const {id} = useParams()
+    const bubbles = useMemo(() => bubble(20), [])
 
-    const {apiHost, apiPort} = useContext(ProfileContext)
+    const navigate = useNavigate()
+    const { musicId, playlistId, artistId } = useParams()
+
+    // Context
+    const { profile, apiHost, apiPort, token } = useContext(ProfileContext)
+    const { musics } = useContext(MusicContext)
+
+
+    // State
     const [music, setMusic] = useState({})
+    const [nextMusic, setNextMusic] = useState({})
+    const [prevMusic, setPrevMusic] = useState({})
+    const [musicList, setMusicList] = useState([])
 
-    const fetchMusic = async () => {
-        const response = await axios.get(`http://${apiHost}:${apiPort}/music/findOne/${id}`)
-        setMusic(response.data.music)
+    // Toast
+    const alert = (message) => {
+        toast.success(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Slide,
+        })
+    }
+
+    const badAlert = (message) => {
+        toast.error(message, {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            transition: Slide,
+        })
+    }
+
+    const handleAlert = (message) => {
+        if (message === 'good') {
+            alert('Add to list success')
+        }
+        else if (message === 'bad') {
+            badAlert('This music already in list')
+        }
+        else {
+            badAlert('Failed adding to list')
+        }
+    }
+
+    const fetchArtist = async (artistId, musicId) => {
+        try {
+
+            const response = await axios.get(`http://${apiHost}:${apiPort}/music/artistById/${artistId}`)
+
+            const musics = response.data.musics
+
+            console.log(musics)
+
+            const musicIndex = musics.findIndex((music) => music._id === musicId)
+
+            setMusic(musics[musicIndex])
+            setNextMusic(musics[musicIndex + 1] || null)
+            setPrevMusic(musics[musicIndex - 1] || null)
+            setMusicList(musics)
+
+        } catch (err) {
+            console.log(err)
+            navigate('/*')
+        }
+
     }
 
     useEffect(() => {
-        fetchMusic()
-    },[])
+
+        const fetchPlaylist = async (_id, musicId) => {
+            try {
+                const response = await axios.get(`http://${apiHost}:${apiPort}/playlist/getPlaylist/${_id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+
+                const playlist = response.data.playlist
+
+                const musicIndex = playlist.musics.findIndex((music) => music._id === musicId)
+
+                setMusic(playlist.musics[musicIndex])
+                setNextMusic(playlist.musics[musicIndex + 1] || null)
+                setPrevMusic(playlist.musics[musicIndex - 1] || null)
+                setMusicList(playlist.musics)
+            } catch (err) {
+                console.log(err)
+                navigate('/*')
+            }
+        }
+
+        if (musicId && playlistId) {
+
+            if (musicId === null || playlistId === null) {
+                setMusic(null)
+                setNextMusic(null)
+                setPrevMusic(null)
+                setMusic(null)
+            }
+            fetchPlaylist(playlistId, musicId)
+
+        }
+        else if (musicId && artistId) {
+            fetchArtist(artistId, musicId)
+        }
+        else {
+
+            if (window.location.pathname.split('/')[1] === 'like') {
+
+                const musics = profile.like
+
+                const musicIndex = musics.findIndex((music) => music._id === musicId)
+
+                setMusic(musics[musicIndex])
+                setNextMusic(musics[musicIndex + 1] || null)
+                setPrevMusic(musics[musicIndex - 1] || null)
+                setMusicList(musics)
+
+                console.log(musicIndex)
+
+            }
+            else {
+
+                const musicIndex = musics.findIndex((music) => music._id === musicId)
+
+                if (musicIndex === -1) {
+                    navigate('/*')
+                    return
+                }
+                setMusic(musics[musicIndex]);
+                setNextMusic(musics[musicIndex + 1] || null);
+                setPrevMusic(musics[musicIndex - 1] || null);
+                setMusicList(musics)
+            }
+
+        }
+
+    }, [musicId, playlistId, musics, artistId]);
+
 
     return (
         <div className="bg-gradient-to-tr from-pink-500 to-black-100 min-h-screen h-full w-full flex flex-row justify-end truncate relative">
             <NavBarComponent />
+            <ToastContainer />
             <div className="h-full w-full absolute blur-2xl bg-black-200/10">
-                {bubble(20)}
+                {bubbles}
             </div>
             <div className="lg:h-screen h-full lg:w-[95.37%] w-full z-10 flex lg:flex-row flex-col">
-                {music && <LeftMusicComponent music={music} />}
-                <RightMusicComponent />
+                {music ?
+                    <LeftMusicComponent music={music} nextMusic={nextMusic} prevMusic={prevMusic} sendMessage={handleAlert} />
+                    :
+                    <div className="lg:w-1/2 lg:h-full h-screen p-16 flex items-center justify-center mt-12 lg:mt-0">
+                        <div className="w-full max-w-[650px] min-w-[300px] h-full bg-white/25 backdrop-blur-2xl rounded-2xl border p-4 flex items-center justify-center">
+                            <h1 className="text-white text-lg">This Playlist is Empty</h1>
+                        </div>
+                    </div>
+                }
+                <RightMusicComponent musics={musicList} />
             </div>
         </div>
     )

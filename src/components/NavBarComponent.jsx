@@ -1,12 +1,22 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { ProfileContext } from "../contexts/ProfileContext"
+import { useLocation } from "react-router-dom"
 
 const apiHost = import.meta.env.VITE_SERVER_HOST
 const apiPort = import.meta.env.VITE_SERVER_PORT
 
 const NavBarComponent = () => {
 
+    const location = useLocation()
+    const currentPath = location.pathname.split('/')[1]
+
+
+    const isActive = (path) => {
+        return currentPath === path ? 'bg-black-100' : 'bg-black-200'
+    }
+
+    // State
     const [navbarSlide, setNavbarSlide] = useState(false)
     const [permission, setPermission] = useState(false)
     const [bottonLogOut, setBottonLogOut] = useState(false)
@@ -20,7 +30,7 @@ const NavBarComponent = () => {
     const adminTool = () => {
         return (
             <a href="/admin">
-                <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-toolbox group-hover:scale-150"></i></div>
+                <div className={`w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group ${isActive('admin')}`}><i className="duration-200 fa-solid fa-toolbox group-hover:scale-150"></i></div>
             </a>
         )
     }
@@ -74,6 +84,7 @@ const NavBarComponent = () => {
     }, [token])
 
 
+    const newLocal = "w-full block sm:hidden"
     return (
         <div className="lg:h-screen lg:w-[90px] h-[90px] w-full fixed bg-black-200 z-50 left-0">
             {/* Side bar */}
@@ -85,7 +96,7 @@ const NavBarComponent = () => {
                     <div className="w-8 h-1 mb-1 bg-white rounded-full group-hover:bg-black-200"></div>
                     <div className="w-8 h-1 bg-white rounded-full group-hover:bg-black-200"></div>
                 </div>
-                <div className="hidden lg:h-[98.094px] lg:w-full sm:flex items-center justify-center hover:bg-white hover:cursor-pointer lg:border-b lg:p-0 p-2 lg:mx-0 mx-8 lg:mr-0 lg:rounded-none rounded-full border-white/20 group transition-all duration-200">
+                <div className={`hidden lg:h-[98.094px] lg:w-full sm:flex items-center justify-center hover:bg-white hover:cursor-pointer lg:border-b lg:p-0 p-2 lg:mx-0 mx-8 lg:mr-0 lg:rounded-none rounded-full border-white/20 group transition-all duration-200 ${isActive('/profile')}`}>
                     <a href="/profile">
                         <div className="h-12 duration-200 bg-white rounded-full aspect-square group-hover:bg-black-200 lg:group-hover:scale-150 bg-cover bg-center" style={{backgroundImage: `url(${profileImg})`}}></div>
                     </a>
@@ -95,13 +106,13 @@ const NavBarComponent = () => {
                 </a>
                 <div className="hidden lg:h-[650px] lg:w-full lg:flex flex-col justify-start">
                     <a href="/">
-                        <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-house group-hover:scale-150"></i></div>
+                        <div className={`w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group ${isActive('')}`}><i className="duration-200 fa-solid fa-house group-hover:scale-150"></i></div>
                     </a>
                     <a href="/list">
-                        <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-list group-hover:scale-150"></i></div>
+                        <div className={`w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group ${isActive('list')}`}><i className="duration-200 fa-solid fa-list group-hover:scale-150"></i></div>
                     </a>
                     <a href="/like">
-                        <div className="w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group"><i className="duration-200 fa-solid fa-heart group-hover:scale-150"></i></div>
+                        <div className={`w-full py-6 text-2xl text-center transition-all duration-200 hover:bg-white hover:text-black-200 hover:cursor-pointer group ${isActive('like')}`}><i className="duration-200 fa-solid fa-heart group-hover:scale-150"></i></div>
                     </a>
                     {permission ? adminTool() : ''}
                     <a href="/register" onClick={() => { bottonLogOut ? localStorage.removeItem('token') : '' }}>
@@ -120,7 +131,7 @@ const NavBarComponent = () => {
                         <i className="ml-12 fa-solid fa-house"></i>
                     </div>
                 </a>
-                <a href="/profile" className="w-full">
+                <a href="/profile" className={newLocal}>
                     <div className="hover:bg-white w-full h-[90px] flex items-center justify-center text-2xl font-bold text-white hover:text-black-200 transition-all duration-200 hover:cursor-pointer">
                         <span className="text-xl font-normal">Profile</span>
                         <i className="fa-solid fa-user ml-12"></i>

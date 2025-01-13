@@ -5,7 +5,8 @@ export const ProfileContext = createContext()
 
 export const ProfileProvider = ({children}) => {
 
-    const [profile, setProfile] = useState(null)
+    const defaultProfile = {playlist: []}
+    const [profile, setProfile] = useState(defaultProfile)
     const [profileImg, setProfileImg] = useState('../public/images/user-image.png')
 
     const apiHost = import.meta.env.VITE_SERVER_HOST
@@ -21,7 +22,8 @@ export const ProfileProvider = ({children}) => {
     
             setProfile(response.data.user)
             if (response.data.user.profile) {
-                setProfileImg(`http://${apiHost}:${apiPort}/profileImg/${response.data.user.profile}`)
+                const encodedProfileImg = encodeURIComponent(response.data.user.profile)
+                setProfileImg(`http://${apiHost}:${apiPort}/profileImg/${encodedProfileImg }`)
             }
         } catch (error) {
             console.error('Error fetching profile:', error)
@@ -29,14 +31,6 @@ export const ProfileProvider = ({children}) => {
     }
 
     const [token, setToken] = useState(localStorage.getItem('token'))
-
-    useEffect(() => {
-        
-        if(token) {
-            fetchProfile()
-        }
-
-    },[])
 
   return (
     <ProfileContext.Provider value={{profile, fetchProfile, apiHost, apiPort, token, setToken, profileImg}}>

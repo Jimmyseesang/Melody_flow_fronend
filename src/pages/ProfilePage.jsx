@@ -1,11 +1,10 @@
+import axios from "axios";
 import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import "react-image-crop/dist/ReactCrop.css";
-import { useNavigate } from "react-router-dom";
 
 import NavBarComponent from "../components/NavBarComponent"
 import CircleComponent from "../components/CircleComponent"
 import { ProfileContext } from "../contexts/ProfileContext";
-import axios from "axios";
 
 const ProfilePage = () => {
 
@@ -19,8 +18,6 @@ const ProfilePage = () => {
     }
     // Info
     const bubbles = useMemo(() => bubble(20), [])
-
-    const navigate = useNavigate()
 
     const [pfHover, setPfHover] = useState(false)
     const imageInput = useRef(null)

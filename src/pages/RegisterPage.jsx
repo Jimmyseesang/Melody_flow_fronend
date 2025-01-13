@@ -1,7 +1,8 @@
+import axios from "axios"
+import CircleComponent from "../components/CircleComponent"
+
 import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import CircleComponent from "../components/CircleComponent"
-import axios from "axios"
 
 const apiHost = import.meta.env.VITE_SERVER_HOST
 const apiPort = import.meta.env.VITE_SERVER_PORT
@@ -109,7 +110,7 @@ const RegisterPage = () => {
 
             try {
 
-                const response = await axios.post(`http://${apiHost}:${apiPort}/user/register`, data)
+                await axios.post(`http://${apiHost}:${apiPort}/user/register`, data)
                 setElementHide(!elementHide)
                 resetRegisterData()
 
@@ -135,7 +136,6 @@ const RegisterPage = () => {
                 email: loginEmail,
                 password: loginPassword
             }
-            console.log(data)
 
             try{
 
@@ -148,16 +148,13 @@ const RegisterPage = () => {
 
                 if(err.status === 404){
                     setAlertLoginEmail(true)
-                    setAlertEMessage('Email or password incurrect')
+                    setAlertEMessage('Email or password incorrect')
                 }
                 else {
 
                     console.error('Error login', err)
 
-                }
-                console.log('i dont know' )
-                
-
+                }                
             }
         }
 

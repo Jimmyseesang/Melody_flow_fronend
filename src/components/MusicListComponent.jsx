@@ -1,28 +1,93 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ProfileContext } from "../contexts/ProfileContext";
+import { useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 
 const MusicListComponent = (props) => {
 
     const navigate = useNavigate()
 
-    const { title, artist, image, option, id} = props
+    const { title, artist, image, option, id } = props
+
+    const { profile, fetchProfile, apiHost, apiPort, token } = useContext(ProfileContext)
 
     const [isHovered, setIsHovered] = useState(false);
+    const [isLike, setIsLike] = useState()
+
+    const { playlistId, musicId, artistId } = useParams()
+
+    const isActive = () => {
+        return musicId === id && 'bg-white/20'
+    }
+
+    const handleOnClike = () => {
+
+
+        if (playlistId) {
+            navigate(`/list/${playlistId}/${id}`)
+        }
+        else if (window.location.pathname.split('/')[1] === 'like') {
+            navigate(`/like/${id}`)
+        } 
+        else if (window.location.pathname.split('/')[1] === 'artistMusic') {
+            navigate(`/artistMusic/${artistId}/${id}`)
+        }
+        else {
+            navigate(`/music/${id}`)
+        }
+
+
+    }
+
+    const handleLike = async () => {
+
+        const like = isLike
+
+        const updateLike = async () => {
+            if (!like) {
+                const response = await axios.post(`http://${apiHost}:${apiPort}/music/likeMusic`, { musicId: id }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+
+                console.log("like")
+            }
+            else {
+                const response = await axios.post(`http://${apiHost}:${apiPort}/music/unlikeMusic`, { musicId: id }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                console.log("unlike")
+            }
+        }
+        await updateLike()
+        await fetchProfile()
+        setIsLike(!like)
+
+    }
+
+    const updateLike = async () => {
+        await fetchProfile()
+        setIsLike(profile.like.some((music) => music._id === id))
+    }
+
+    useEffect(() => {
+        updateLike()
+    }, [])
 
     return (
-        <div className={`w-full md:min-h-[76px] md:h-[76px] min-h-[65px] h-[65px] flex text-white hover:cursor-pointer transition-all duration-200 justify-between ${isHovered && 'bg-black-200'}`} onClick={() => {navigate(`/music/${id}`)}} >
-            <div className="h-full aspect-square flex justify-center items-center p-2">
-                <div className="h-full aspect-square bg-cover bg-center rounded bg-white" style={{backgroundImage: `url(${image})`}}></div>
+        <div className={`w-full md:min-h-[76px] md:h-[76px] min-h-[65px] h-[65px] flex text-white hover:cursor-pointer justify-between ${isHovered && 'bg-white/20'} ${isActive()}`}>
+            <div className="h-full aspect-square flex justify-center items-center p-2" onMouseEnter={() => { setIsHovered(true) }} onMouseLeave={() => { setIsHovered(false) }} onClick={() => { handleOnClike() }}>
+                <div className="h-full aspect-square bg-cover bg-center rounded bg-white" style={{ backgroundImage: `url(${image})` }}></div>
             </div>
-            <div className="md:w-[80%] w-full h-full flex lg:flex-row lg:justify-around p-2 lg:items-center flex-col truncate items-start justify-start" onMouseEnter={() => {setIsHovered(true)}} onMouseLeave={() => {setIsHovered(false)}} >
-                <p className="w-1/2 h-full flex lg:justify-center justify-start items-center text-start md:text-base text-sm">{title}</p>
+            <div className="w-full flex " onMouseEnter={() => { setIsHovered(true) }} onMouseLeave={() => { setIsHovered(false) }} onClick={() => { handleOnClike() }}>
+                <p className="w-1/2 h-full flex justify-center items-center text-start md:text-base text-sm truncate">{title}</p>
                 <p className="w-1/2 h-full flex lg:justify-center justify-start items-center md:text-base text-sm">{artist}</p>
             </div>
-            <div className={`h-full aspect-square justify-center items-center group hover:bg-white/20 transition-all duration-200 max-h-full ${option ? 'flex' : 'hidden'}`}>
-                <i className="fa-solid fa-heart text-xl text-red-500 group-hover:text-white transition-all duration-200"></i>
-            </div>
-            <div className={`grow justify-center items-center group hover:bg-white/20 transition-all duration-200 max-h-full aspect-square ${option ? 'md:flex hidden' : 'hidden'}`}>
-                <i className="fa-solid fa-plus text-xl group-hover:text-green-500 transition-all duration-200"></i>
+            <div className={`h-full aspect-square justify-center items-center group hover:bg-white/20 transition-all duration-200 max-h-full ${option ? 'flex' : 'hidden'}`} onClick={() => handleLike()}>
+                <i className={`fa-solid fa-heart text-xl ${isLike ? 'text-red-500' : 'text-white'} group-hover:text-white transition-all duration-200`}></i>
             </div>
         </div>
     )

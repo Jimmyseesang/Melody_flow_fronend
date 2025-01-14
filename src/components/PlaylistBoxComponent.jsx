@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import { ProfileContext } from "../contexts/ProfileContext"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
@@ -33,7 +33,8 @@ const PlaylistBoxComponent = (props) => {
         const result = await fetchPlaylist()
         const {playlistId, musicId} = result
 
-        navigate(`${playlistId}/${musicId}`)
+        // navigate(`${playlistId}/${musicId}`)
+        navigate(`/playlist/${playlistId}`)
        
     }
     

@@ -1,15 +1,17 @@
-import { useContext, useEffect, useState } from "react"
 import axios from "axios"
+import { useContext, useEffect, useState } from "react"
 import { Slide, ToastContainer, toast } from "react-toastify"
 
 import NavBarComponent from "../components/NavBarComponent"
 import ArtistFormComponent from "../components/adminPageComponents/ArtistFormComponent"
 import ArtistListComponent from "../components/adminPageComponents/ArtistListComponent"
 import { ProfileContext } from "../contexts/ProfileContext"
+import { MusicContext } from "../contexts/MusicContext"
 
 const AdminPage = () => {
 
     const { apiHost, apiPort, token } = useContext(ProfileContext)
+    const { musics, getAllMusic } = useContext(MusicContext)
 
     // data variable
     const [title, setTitle] = useState('')
@@ -108,32 +110,23 @@ const AdminPage = () => {
 
     }
 
-    const getAllMusic = async () => {
-
-        const response = await axios.get(`http://${apiHost}:${apiPort}/music/findAllMusic`)
-
-        setMusic(response.data.music)
-
-    }
-
     const deleteMusic = async (id) => {
 
-        const token = localStorage.getItem('token')
+        if (confirm("Do you want to delete music?")) {
+            const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteMusic/${id}`, {
+                headers: {
+                    'authorization': `Bearer ${token}`,
+                }
+            })
 
-        const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteMusic/${id}`, {
-            headers: {
-                'authorization': `Bearer ${token}`,
+            if (response.status === 200) {
+                getAllMusic()
+                alert('Delete music success')
             }
-        })
-
-        if (response.status === 200) {
-            getAllMusic()
-            alert('Delete music success')
+            else {
+                console.log('error')
+            }
         }
-        else {
-            console.log('error')
-        }
-
 
     }
 
@@ -161,16 +154,16 @@ const AdminPage = () => {
                 getAllMusic()
                 alert('Add music success')
             }
-            catch(err) {
+            catch (err) {
                 console.log(err)
-                if(err.status === 404) {
+                if (err.status === 404) {
                     alertFail("This artist doesn't exist yet.")
                 }
                 else {
                     alertFail("Error adding music.")
                 }
             }
-    
+
         }
 
     }
@@ -213,8 +206,8 @@ const AdminPage = () => {
                         {/* artist */}
                         <div className="flex flex-col my-4 relative">
                             <label htmlFor="artist" className="text-lg font-bold">Artist</label>
-                            <h2 className="bg-white w-full h-10 rounded text-black-100 flex items-center justify-between p-2 hover:cursor-pointer" onClick={() => {setSelectArtist(!selectArtist)}}>{artist ? artist: 'Select an artists'}<span><i className="fa-solid fa-angle-down"></i></span></h2>
-                            <ul className={`bg-white w-full h-[260px] rounded absolute ${selectArtist ? 'flex': 'hidden'} top-20 truncate flex-col items-center scroll-smooth`} style={{overflow: 'auto', scrollbarWidth: 'none'}}>
+                            <h2 className="bg-white w-full h-10 rounded text-black-100 flex items-center justify-between p-2 hover:cursor-pointer" onClick={() => { setSelectArtist(!selectArtist) }}>{artist ? artist : 'Select an artists'}<span><i className="fa-solid fa-angle-down"></i></span></h2>
+                            <ul className={`bg-white w-full h-[260px] rounded absolute ${selectArtist ? 'flex' : 'hidden'} top-20 truncate flex-col items-center scroll-smooth`} style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
                                 {artists && artists.map(artist => {
                                     return (
                                         <li className="min-h-[25%] w-full text-black-200 flex items-center justify-center hover:bg-black-200 hover:cursor-pointer hover:text-pink-600" onClick={() => onArtistSelect(artist)} key={artist._id}>{artist.name}</li>
@@ -236,18 +229,6 @@ const AdminPage = () => {
                             />
                             <p className={`text-red-700 ${genreAlert ? '' : 'hidden'}`}>Please enter this field!!!</p>
                         </div>
-                        {/* music file */}
-                        <div className="flex flex-col my-4">
-                            <label htmlFor="music-file" className="label-style">File</label>
-                            <input
-                                type="file"
-                                id="music-file"
-                                className="bg-white p-2 rounded text-pink-500 hover:cursor-pointer"
-                                onFocus={() => { setAudioAlert(false) }}
-                                onChange={(e) => { setAudio(e.target.files[0]) }}
-                            />
-                            <p className={`text-red-700 ${audioAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
-                        </div>
                         {/* cover music */}
                         <div className="flex flex-col my-4">
                             <label htmlFor="cover-file" className="label-style">Cover file</label>
@@ -259,6 +240,18 @@ const AdminPage = () => {
                                 onChange={(e) => { setCover(e.target.files[0]) }}
                             />
                             <p className={`text-red-700 ${coverAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
+                        </div>
+                        {/* music file */}
+                        <div className="flex flex-col my-4">
+                            <label htmlFor="music-file" className="label-style">File</label>
+                            <input
+                                type="file"
+                                id="music-file"
+                                className="bg-white p-2 rounded text-pink-500 hover:cursor-pointer"
+                                onFocus={() => { setAudioAlert(false) }}
+                                onChange={(e) => { setAudio(e.target.files[0]) }}
+                            />
+                            <p className={`text-red-700 ${audioAlert ? '' : 'hidden'}`}>Please enter input file!!!</p>
                         </div>
                         <div className="flex justify-center items-center mt-8">
                             <button className="bg-pink-600 p-3 rounded w-1/2 hover:bg-black-200 hover:text-pink-600 hover:border-2 border-pink-600 transition-all duration-[.5s]" type="submit" >Enter</button>
@@ -282,7 +275,7 @@ const AdminPage = () => {
                                 </tr>
                             </thead>
                             <tbody className="sm:text-base text-sm bg-white">
-                                {music.map((e, i) => {
+                                {musics.map((e, i) => {
                                     return <tr className="w-full border-b" key={e._id}>
                                         <td className="text-center border truncate">{e.title}</td>
                                         <td className="text-center border">{e.artist}</td>

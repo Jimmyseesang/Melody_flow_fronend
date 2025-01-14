@@ -1,10 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom"
-import NavBarComponent from "../components/NavBarComponent"
-import { useContext, useEffect, useRef, useState } from "react"
 import axios from "axios"
-import { ProfileContext } from "../contexts/ProfileContext"
+import { useNavigate, useParams } from "react-router-dom"
+import { useContext, useEffect, useRef, useState } from "react"
 import { Slide, ToastContainer, toast } from "react-toastify"
+
+import { ProfileContext } from "../contexts/ProfileContext"
 import EditMusicForm from "../components/adminPageComponents/EditMusicFormComponent"
+import NavBarComponent from "../components/NavBarComponent"
 
 const ArtistEditPage = () => {
 
@@ -258,7 +259,7 @@ const ArtistEditPage = () => {
                     }
                 </div>
             </div>
-            {/* <div className={`bg-black-100/50 backdrop-blur h-full w-full absolute z-10 items-center justify-center ${isAddMusic ? 'flex' : 'hidden'}`}>
+            <div className={`bg-black-100/50 backdrop-blur h-full w-full absolute z-10 items-center justify-center ${isAddMusic ? 'flex' : 'hidden'}`}>
                 <div className="w-1/2 h-[700px] bg-black-200 rounded-lg relative">
                     <div className="w-12 aspect-square top-4 right-4 absolute flex items-center justify-center text-3xl text-white hover:cursor-pointer hover:scale-125 transition-all duration-200 hover:text-pink-600" onClick={() => { setIsAddMusic(false) }}>
                         <i className="fa-solid fa-xmark"></i>
@@ -284,7 +285,7 @@ const ArtistEditPage = () => {
                         <button type="submit" className="py-2 px-8 bg-pink-600 text-white hover:text-pink-600 hover:bg-white transition-all duration-200 rounded hover:scale-125">ADD</button>
                     </form>
                 </div>
-            </div> */}
+            </div>
         </section>
     )
 }

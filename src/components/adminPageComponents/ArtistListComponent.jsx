@@ -2,6 +2,7 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ProfileContext } from "../../contexts/ProfileContext"
+import { MusicContext } from "../../contexts/MusicContext"
 
 const ArtistListComponent = (props) => {
 
@@ -10,6 +11,7 @@ const ArtistListComponent = (props) => {
     const navigate = useNavigate()
 
     const { apiHost, apiPort, token } = useContext(ProfileContext)
+    const { getAllMusic } = useContext(MusicContext)
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
@@ -18,20 +20,22 @@ const ArtistListComponent = (props) => {
     }
 
     const handleDelete = async (artist) => {
-        const id = artist._id
-        const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteArtist/${id}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
+        if (confirm("Do you want to delete artist?")) {
+            const id = artist._id
+            const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteArtist/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            console.log(response.data)
+            if (response.status === 200) {
+                await getArtist()
+                await getAllMusic()
+                alert('Delete artist success')
+            } else {
+                alertFail('Fail delete artist')
             }
-        })
-        console.log(response.data)
-        if (response.status === 200) {
-            alert('Delete artist success')
-            await getArtist()
-        } else {
-            alertFail('Fail delete artist')
         }
-
     }
 
     useEffect(() => {
@@ -48,7 +52,7 @@ const ArtistListComponent = (props) => {
         <section className="h-screen w-full flex items-center justify-center">
             <div className="w-full h-full flex items-center justify-center flex-col gap-y-8">
                 <h1 className="text-pink-600 sm:text-4xl text-xl font-bold">Manage Artist</h1>
-                <div className="truncate w-[70%] max-h-[526px] min-w-[250px]" style={{overflow: 'auto', scrollbarWidth:'none'}}>
+                <div className="truncate w-[70%] max-h-[526px] min-w-[250px]" style={{ overflow: 'auto', scrollbarWidth: 'none' }}>
                     <table className="w-full">
                         <thead className="bg-pink-600 sm:text-xl sticky text-base top-0">
                             <tr>

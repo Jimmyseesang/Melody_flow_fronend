@@ -2,9 +2,7 @@ import { useContext, useEffect, useMemo, useState } from "react"
 
 import CircleComponent from "../components/CircleComponent"
 import NavBarComponent from "../components/NavBarComponent"
-import MusicListComponent from "../components/MusicListComponent"
 import { ProfileContext } from "../contexts/ProfileContext"
-import axios from "axios"
 import MusicLikeBoxComponent from "../components/MusicLikeBoxComponent"
 
 const LikePage = () => {

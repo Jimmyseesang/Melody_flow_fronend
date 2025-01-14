@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 // import Page
 import HomePage from "./pages/HomePage"
-import TestPage from "./pages/TestPage"
 import MusicPage from "./pages/MusicPage"
 import RegisterPage from "./pages/RegisterPage"
 import AdminPage from "./pages/AdminPage"
@@ -17,6 +16,7 @@ import ProtectLogin from "./pages/ProtectLogin";
 import { ProfileProvider } from "./contexts/ProfileContext";
 import { MusicProvider } from "./contexts/MusicContext";
 import ArtistEditPage from "./pages/ArtistEditPage";
+import PlaylistIdPage from "./pages/PlaylistIdPage";
 
 const App = () => {
 
@@ -39,9 +39,9 @@ const App = () => {
                         <Route path="/list/:playlistId/:musicId" element={<MusicPage/>}/>
                         <Route path="/like/:musicId" element={<MusicPage/>}/>
                         <Route path="/artistMusic/:artistId/:musicId" element={<MusicPage/>}/>
+                        <Route path="/playlist/:playlistId" element={<PlaylistIdPage/>} />
                     </Route>
                     <Route path="/*" element={<PageNotFound />} />
-                    <Route path="/test" element={<TestPage />} />
                 </Routes>
             </MusicProvider>
         </ProfileProvider>

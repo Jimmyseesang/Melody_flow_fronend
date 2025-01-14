@@ -24,7 +24,6 @@ const LeftMusicComponent = (props) => {
 
     // Context
     const { apiHost, apiPort, profile, token, fetchProfile } = useContext(ProfileContext)
-    const { getAllMusic } = useContext(MusicContext)
 
     // State
     const [isPlay, setIsPlay] = useState(false)
@@ -273,14 +272,13 @@ const LeftMusicComponent = (props) => {
 
     }
 
-    const handleDelete = async (id) => {
-        const response = await axios.delete(`http://${apiHost}:${apiPort}/playlist/deletePlaylist/${id}`, {
+    const handleDeletePlaylist = async (id) => {
+        await axios.delete(`http://${apiHost}:${apiPort}/playlist/deletePlaylist/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
 
-        console.log(response.data)
         await fetchProfile()
 
     }
@@ -409,7 +407,7 @@ const LeftMusicComponent = (props) => {
                                                 <div className="h-full scale-90 aspect-square bg-center bg-cover rounded group-hover:scale-100 transition-all duration-100" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/playlistImg/${encodeURIComponent(e.image)})` }}></div>
                                                 <div className="w-full h-full flex items-center justify-center text-base text-white rounded transition-all duration-200 group-hover:bg-pink-600/80">{e.title}</div>
                                             </div>
-                                            <div className="h-full aspect-square text-red-600 flex items-center justify-center text-2xl hover:cursor-pointer hover:bg-red-600 hover:text-white rounded transition-all duration-200" onClick={() => { handleDelete(e._id) }}>
+                                            <div className="h-full aspect-square text-red-600 flex items-center justify-center text-2xl hover:cursor-pointer hover:bg-red-600 hover:text-white rounded transition-all duration-200" onClick={() => { handleDeletePlaylist(e._id) }}>
                                                 <i className="fa-solid fa-trash-can"></i>
                                             </div>
                                         </li>

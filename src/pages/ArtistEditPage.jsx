@@ -222,7 +222,7 @@ const ArtistEditPage = () => {
             <ToastContainer />
             <EditMusicForm isEditMusic={isEditMusic} setIsEditMusic={setIsEditMusic} music={musicEdit} />
             <div className="w-[60%] h-[600px] min-w-[340px] bg-black-200 absolute lg:bottom-[40%] bottom-[35%] right-1/2 translate-x-1/2 translate-y-1/2 rounded-lg flex items-end p-8">
-                <div className="sm:w-[35%] sm:min-w-[350px] min-w-[200px] aspect-square rounded-full bg-white bg-cover bg-center absolute right-1/2 sm:-top-16 -top-8 -translate-y-1/2 translate-x-1/2 hover:cursor-pointer hover:rounded-lg transition-all duration-1000 hover:w-1/2 hover:aspect-video truncate group" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/artistImage/${artist.image})` }} onClick={() => { imageInput.current.click() }}></div>
+                <div className="sm:w-[35%] sm:min-w-[350px] min-w-[200px] aspect-square rounded-full bg-white bg-cover bg-center absolute right-1/2 sm:-top-16 -top-8 -translate-y-1/2 translate-x-1/2 hover:cursor-pointer hover:rounded-lg transition-all duration-1000 hover:w-1/2 hover:aspect-video truncate group" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/artistImage/${encodeURIComponent(artist.image)})` }} onClick={() => { imageInput.current.click() }}></div>
                 <input type="file" className="hidden" ref={imageInput} onChange={onSelectFile} />
                 <h1 className="absolute top-[25%] right-1/2 translate-x-1/2 text-4xl font-bold text-pink-600">{artist.name}</h1>
                 <button className="absolute top-28 lg:left-40 left-24 -translate-x-1/2 -translate-y-1/2 hover:scale-110 w-[20%] max-w-[180px] lg:aspect-video aspect-square bg-green-600 flex items-center justify-center text-white text-3xl font-bold rounded-xl transition-all duration-200 hover:bg-white hover:text-green-500" onClick={() => { setIsAddMusic(true) }}>
@@ -236,7 +236,7 @@ const ArtistEditPage = () => {
                         return (
                             <div className="w-full h-[25%] flex bg-white/10 hover:bg-black-100/40 transition-all duration-200 last:rounded-b-lg" key={i}>
                                 <div className="h-full aspect-square p-2">
-                                    <div className="bg-cover bg-center w-full h-full rounded-md" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${e.coverUrl})` }}></div>
+                                    <div className="bg-cover bg-center w-full h-full rounded-md" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${encodeURIComponent(e.coverUrl)})` }}></div>
                                 </div>
                                 <h3 className="w-full h-full flex items-center justify-center text-lg text-white">{e.title}</h3>
                                 {/* <div className="h-full aspect-square p-4" onClick={() => handleEdit(e)}>

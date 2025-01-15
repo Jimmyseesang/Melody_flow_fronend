@@ -10,6 +10,7 @@ export default defineConfig({
     strictPort: true,
     hmr: {
       clientPort: 3130,
+      
     },
   }
 })

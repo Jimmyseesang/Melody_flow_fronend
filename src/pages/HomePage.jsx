@@ -141,7 +141,7 @@ const HomePage = () => {
                                 </div>
                             </h1>
                             <div className="h-full w-full flex flex-col truncate scroll-smooth scrollbarCustom overflow-y-auto" style={{ overflowY: 'auto' }}>
-                                {musics.length > 0 && (musics.map((e, i) => { return <MusicListComponent {...e} image={`http://${apiHost}:${apiPort}/musicImg/${e.coverUrl}`} id={e._id} index={i} key={i} option={true} /> }))}
+                                {musics.length > 0 && (musics.map((e, i) => { return <MusicListComponent {...e} image={`http://${apiHost}:${apiPort}/musicImg/${encodeURIComponent(e.coverUrl)}`} id={e._id} index={i} key={i} option={true} /> }))}
                             </div>
                         </div>
                         {/* section two */}
@@ -157,15 +157,15 @@ const HomePage = () => {
                                     <div className="h-full aspect-video bg-black-100 rounded-lg flex truncate scroll-smooth snap-x snap-mandatory relative" style={{ overflowX: 'auto', scrollbarWidth: 'none' }} ref={imageContainer}>
                                         {artistList.map((e, i) => {
                                             return (
-                                                <div className="bg-cover bg-center flex-2 object-cover snap-start flex justify-end items-end p-4 hover:cursor-pointer group" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/artistImage/${e.image})` }} key={i} onClick={() => { handleArtistClick(e) }} id={e._id}>
+                                                <div className="bg-cover bg-center flex-2 object-cover snap-start flex justify-end items-end p-4 hover:cursor-pointer group" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/artistImage/${encodeURIComponent(e.image)})` }} key={i} onClick={() => { handleArtistClick(e) }} id={e._id}>
                                                     <h1 className="text-white sm:text-4xl font-bold sm:m-0 mb-12 text-2xl group-hover:" style={{ textShadow: '2px 2px 4px rgba(236, 72, 153, 1)' }}>{e.name}</h1>
                                                 </div>
                                             )
                                         })}
                                     </div>
-                                    <div className="absolute bg-white/50 h-[30px] w-[150px] sm:bottom-4 sm:left-4 bottom-4 right-4 rounded-full flex items-center justify-around p-2">
+                                    {/* <div className="absolute bg-white/50 h-[30px] w-[150px] sm:bottom-4 sm:left-4 bottom-4 right-4 rounded-full flex items-center justify-around p-2">
                                         {artistList.map(e => <a className="h-3 aspect-square bg-white rounded-full" key={e._id} href={`#${e._id}`}></a>)}
-                                    </div>
+                                    </div> */}
                                     <div className="h-full w-20 absolute flex items-center justify-center top-0">
                                         <i className="fa-solid fa-angle-left text-xl bg-white/20 w-12 aspect-square flex items-center justify-center rounded-full text-white hover:cursor-pointer hover:scale-125 transition-all duration-200 hover:text-pink-600 hover:bg-white" onClick={() => { handleLeft() }}></i>
                                     </div>

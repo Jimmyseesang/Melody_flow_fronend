@@ -377,7 +377,7 @@ const LeftMusicComponent = (props) => {
                                         }} />
                                     {imgPrev ?
                                         <div className="w-52 aspect-square relative border-2 rounded border-dashed hover:border-pink-600 transition-all duration-200">
-                                            <div className="w-full h-full rounded bg-center bg-cover hover:opacity-60 hover:cursor-pointer flex items-center justify-center" style={{ backgroundImage: `url(${imgPrev})` }} onClick={() => { plImgRef.current.click() }}></div>
+                                            <div className="w-full h-full rounded bg-center bg-cover hover:opacity-60 hover:cursor-pointer flex items-center justify-center" style={{ backgroundImage: `url(${encodeURIComponent(imgPrev)})` }} onClick={() => { plImgRef.current.click() }}></div>
                                         </div>
                                         :
                                         <div className="w-52 aspect-square bg-black-200/20 rounded flex justify-center items-center flex-col border-white/50 border-2 border-dashed hover:border-pink-600 hover:cursor-pointer group hover:bg-black-100 transition-all duration-200" onClick={() => { plImgRef.current.click() }}>
@@ -416,7 +416,7 @@ const LeftMusicComponent = (props) => {
                             </ul>
                         </div>
                     </div>
-                    <div className="w-[60%] md:min-w-[300px] min-w-[200px] aspect-square rounded-full bg-center bg-cover border-2 border-black-200 relative animate-spin1" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${music.coverUrl})` }}></div>
+                    <div className="w-[60%] md:min-w-[300px] min-w-[200px] aspect-square rounded-full bg-center bg-cover border-2 border-black-200 relative animate-spin1" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${encodeURIComponent(music.coverUrl)})` }}></div>
                     <div className="absolute top-0 left-0" onClick={() => { setisAddToPlaylist(!isAddToPlaylist) }}>
                         <i className="fa-solid fa-ellipsis-vertical text-white h-full aspect-square p-4 flex justify-center items-center text-2xl rounded-full hover:text-black-100 hover:cursor-pointer transition-all duration-200"></i>
                     </div>

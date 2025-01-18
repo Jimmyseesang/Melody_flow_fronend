@@ -24,6 +24,7 @@ const LeftMusicComponent = (props) => {
 
     // Context
     const { apiHost, apiPort, profile, token, fetchProfile } = useContext(ProfileContext)
+    const API_URL = apiHost + '/api'
 
     // State
     const [isPlay, setIsPlay] = useState(false)
@@ -172,7 +173,7 @@ const LeftMusicComponent = (props) => {
 
     const addPlaylist = async (data) => {
 
-        const response = await axios.post(`http://${apiHost}:${apiPort}/playlist/addPlaylist`, data, {
+        const response = await axios.post(`${API_URL}/playlist/addPlaylist`, data, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -216,7 +217,7 @@ const LeftMusicComponent = (props) => {
 
             const data = { playlistId: id, musicId: music._id }
 
-            await axios.post(`http://${apiHost}:${apiPort}/playlist/addToplaylist`, data, {
+            await axios.post(`${API_URL}/playlist/addToplaylist`, data, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -247,7 +248,7 @@ const LeftMusicComponent = (props) => {
             if (like) {
                 console.log('like')
 
-                const response = await axios.post(`http://${apiHost}:${apiPort}/music/likeMusic`, { musicId: music._id }, {
+                const response = await axios.post(`${API_URL}/music/likeMusic`, { musicId: music._id }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -256,7 +257,7 @@ const LeftMusicComponent = (props) => {
 
             } else {
                 console.log('unlike')
-                const response = await axios.post(`http://${apiHost}:${apiPort}/music/unlikeMusic`, { musicId: music._id }, {
+                const response = await axios.post(`${API_URL}/music/unlikeMusic`, { musicId: music._id }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -273,7 +274,7 @@ const LeftMusicComponent = (props) => {
     }
 
     const handleDeletePlaylist = async (id) => {
-        await axios.delete(`http://${apiHost}:${apiPort}/playlist/deletePlaylist/${id}`, {
+        await axios.delete(`${API_URL}/playlist/deletePlaylist/${id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -404,7 +405,7 @@ const LeftMusicComponent = (props) => {
                                     return (
                                         <li className="min-h-[20%] w-full bg-black-100 last:rounded-b p-2 flex gap-2" key={i}>
                                             <div className="w-full h-full flex gap-2 group hover:cursor-pointer flex-1" onClick={() => { handleAddToPlaylist(e._id) }}>
-                                                <div className="h-full scale-90 aspect-square bg-center bg-cover rounded group-hover:scale-100 transition-all duration-100" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/playlistImg/${encodeURIComponent(e.image)})` }}></div>
+                                                <div className="h-full scale-90 aspect-square bg-center bg-cover rounded group-hover:scale-100 transition-all duration-100" style={{ backgroundImage: `url(${API_URL}/playlistImg/${encodeURIComponent(e.image)})` }}></div>
                                                 <div className="w-full h-full flex items-center justify-center text-base text-white rounded transition-all duration-200 group-hover:bg-pink-600/80">{e.title}</div>
                                             </div>
                                             <div className="h-full aspect-square text-red-600 flex items-center justify-center text-2xl hover:cursor-pointer hover:bg-red-600 hover:text-white rounded transition-all duration-200" onClick={() => { handleDeletePlaylist(e._id) }}>
@@ -416,7 +417,7 @@ const LeftMusicComponent = (props) => {
                             </ul>
                         </div>
                     </div>
-                    <div className="w-[60%] md:min-w-[300px] min-w-[200px] aspect-square rounded-full bg-center bg-cover border-2 border-black-200 relative animate-spin1" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${encodeURIComponent(music.coverUrl)})` }}></div>
+                    <div className="w-[60%] md:min-w-[300px] min-w-[200px] aspect-square rounded-full bg-center bg-cover border-2 border-black-200 relative animate-spin1" style={{ backgroundImage: `url(${API_URL}/musicImg/${encodeURIComponent(music.coverUrl)})` }}></div>
                     <div className="absolute top-0 left-0" onClick={() => { setisAddToPlaylist(!isAddToPlaylist) }}>
                         <i className="fa-solid fa-ellipsis-vertical text-white h-full aspect-square p-4 flex justify-center items-center text-2xl rounded-full hover:text-black-100 hover:cursor-pointer transition-all duration-200"></i>
                     </div>
@@ -463,7 +464,7 @@ const LeftMusicComponent = (props) => {
                         <p className="text-black-200">{progress}</p>
                         <p className="text-black-200">{musicDuration}</p>
                     </div>
-                    <audio src={`http://${apiHost}:${apiPort}/musicFile/${music.audioUrl}`} ref={audio} preload="metadata" onLoadedMetadata={() => { handleMusicDuration() }} onTimeUpdate={upDateProgressBar} onEnded={handleNext}></audio>
+                    <audio src={`${API_URL}/musicFile/${music.audioUrl}`} ref={audio} preload="metadata" onLoadedMetadata={() => { handleMusicDuration() }} onTimeUpdate={upDateProgressBar} onEnded={handleNext}></audio>
                 </div>
             </div>
         </div>

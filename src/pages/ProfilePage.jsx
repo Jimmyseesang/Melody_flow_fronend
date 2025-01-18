@@ -23,6 +23,7 @@ const ProfilePage = () => {
     const imageInput = useRef(null)
 
     const { profile, fetchProfile, apiHost, apiPort, token, profileImg } = useContext(ProfileContext)
+    const API_URL = apiHost+'/api'
 
     const uploadImage = () => {
         imageInput.current.click()
@@ -33,7 +34,7 @@ const ProfilePage = () => {
         data.append('image', image)
 
         try {
-            const response = await axios.post(`http://${apiHost}:${apiPort}/user/uploadProfile`, data, {
+            const response = await axios.post(`${API_URL}/user/uploadProfile`, data, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

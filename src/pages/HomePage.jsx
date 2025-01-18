@@ -30,6 +30,7 @@ const HomePage = () => {
     // Context
     const { fetchProfile, token, apiHost, apiPort } = useContext(ProfileContext)
     const { musics, setMusics, getAllMusic } = useContext(MusicContext)
+    const API_URL = apiHost+'/api'
 
     // State
     const [genre, setGenre] = useState({})
@@ -38,7 +39,7 @@ const HomePage = () => {
 
     const fetchGenre = async () => {
 
-        const response = await axios.get(`http://${apiHost}:${apiPort}/music/findGenre`)
+        const response = await axios.get(`${API_URL}/music/findGenre`)
 
         setGenre(response.data.genre)
 
@@ -47,7 +48,7 @@ const HomePage = () => {
     const searchMusic = async (e) => {
         if (e.key === 'Enter') {
             try {
-                const response = await axios.post(`http://${apiHost}:${apiPort}/user/search`,
+                const response = await axios.post(`${API_URL}/user/search`,
                     { word: searchWord },
                     {
                         headers: {
@@ -75,7 +76,7 @@ const HomePage = () => {
 
     const handleGenreClick = async (genre) => {
         console.log(genre)
-        const response = await axios.post(`http://${apiHost}:${apiPort}/user/searchGenre`, { genre }, {
+        const response = await axios.post(`${API_URL}/user/searchGenre`, { genre }, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -86,7 +87,7 @@ const HomePage = () => {
     }
 
     const fetchArtistRec = async () => {
-        const response = await axios.get(`http://${apiHost}:${apiPort}/music/recomArtist`)
+        const response = await axios.get(`${API_URL}/music/recomArtist`)
         setArtistList(response.data.artist)
     }
 
@@ -141,7 +142,7 @@ const HomePage = () => {
                                 </div>
                             </h1>
                             <div className="h-full w-full flex flex-col truncate scroll-smooth scrollbarCustom overflow-y-auto" style={{ overflowY: 'auto' }}>
-                                {musics.length > 0 && (musics.map((e, i) => { return <MusicListComponent {...e} image={`http://${apiHost}:${apiPort}/musicImg/${encodeURIComponent(e.coverUrl)}`} id={e._id} index={i} key={i} option={true} /> }))}
+                                {musics.length > 0 && (musics.map((e, i) => { return <MusicListComponent {...e} image={`${API_URL}/musicImg/${encodeURIComponent(e.coverUrl)}`} id={e._id} index={i} key={i} option={true} /> }))}
                             </div>
                         </div>
                         {/* section two */}
@@ -157,7 +158,7 @@ const HomePage = () => {
                                     <div className="h-full aspect-video bg-black-100 rounded-lg flex truncate scroll-smooth snap-x snap-mandatory relative" style={{ overflowX: 'auto', scrollbarWidth: 'none' }} ref={imageContainer}>
                                         {artistList.map((e, i) => {
                                             return (
-                                                <div className="bg-cover bg-center flex-2 object-cover snap-start flex justify-end items-end p-4 hover:cursor-pointer group" style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/artistImage/${encodeURIComponent(e.image)})` }} key={i} onClick={() => { handleArtistClick(e) }} id={e._id}>
+                                                <div className="bg-cover bg-center flex-2 object-cover snap-start flex justify-end items-end p-4 hover:cursor-pointer group" style={{ backgroundImage: `url(${API_URL}/artistImage/${encodeURIComponent(e.image)})` }} key={i} onClick={() => { handleArtistClick(e) }} id={e._id}>
                                                     <h1 className="text-white sm:text-4xl font-bold sm:m-0 mb-12 text-2xl group-hover:" style={{ textShadow: '2px 2px 4px rgba(236, 72, 153, 1)' }}>{e.name}</h1>
                                                 </div>
                                             )

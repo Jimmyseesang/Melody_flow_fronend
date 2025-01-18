@@ -29,7 +29,7 @@ const MusicPage = () => {
     // Context
     const { profile, apiHost, apiPort, token } = useContext(ProfileContext)
     const { musics } = useContext(MusicContext)
-
+    const API_URL = apiHost+'/api'
 
     // State
     const [music, setMusic] = useState({})
@@ -81,7 +81,7 @@ const MusicPage = () => {
     const fetchArtist = async (artistId, musicId) => {
         try {
 
-            const response = await axios.get(`http://${apiHost}:${apiPort}/music/artistById/${artistId}`)
+            const response = await axios.get(`${API_URL}/music/artistById/${artistId}`)
 
             const musics = response.data.musics
 
@@ -105,7 +105,7 @@ const MusicPage = () => {
 
         const fetchPlaylist = async (_id, musicId) => {
             try {
-                const response = await axios.get(`http://${apiHost}:${apiPort}/playlist/getPlaylist/${_id}`, {
+                const response = await axios.get(`${API_URL}/playlist/getPlaylist/${_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

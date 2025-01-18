@@ -10,16 +10,18 @@ const apiPort = import.meta.env.VITE_SERVER_PORT
 const RegisterPage = () => {
 
     const navigate = useNavigate()
-    
+
     const bubble = (index) => {
         const component = []
         for (let i = 0; i <= index; i++) {
             component.push(<CircleComponent key={i} />)
         }
-        
+
         return component
     }
-    
+
+    const API_URL = apiHost + '/api'
+
     const bubbles = useMemo(() => bubble(20), [])
     const [elementHide, setElementHide] = useState(false)
 
@@ -110,7 +112,7 @@ const RegisterPage = () => {
 
             try {
 
-                await axios.post(`http://${apiHost}:${apiPort}/user/register`, data)
+                await axios.post(`${API_URL}/user/register`, data)
                 setElementHide(!elementHide)
                 resetRegisterData()
 
@@ -131,22 +133,22 @@ const RegisterPage = () => {
 
         event.preventDefault()
 
-        if(checkLoginData()) {
+        if (checkLoginData()) {
             const data = {
                 email: loginEmail,
                 password: loginPassword
             }
 
-            try{
+            try {
 
-                const response = await axios.post(`http://${apiHost}:${apiPort}/user/login`,data)
+                const response = await axios.post(`${API_URL}/user/login`, data)
                 localStorage.setItem('token', response.data.token)
                 navigate('/')
 
             }
-            catch(err) {
+            catch (err) {
 
-                if(err.status === 404){
+                if (err.status === 404) {
                     setAlertLoginEmail(true)
                     setAlertEMessage('Email or password incorrect')
                 }
@@ -154,7 +156,7 @@ const RegisterPage = () => {
 
                     console.error('Error login', err)
 
-                }                
+                }
             }
         }
 
@@ -226,13 +228,13 @@ const RegisterPage = () => {
                         <p className="flex">
                             Already have an account?
                             <span
-                                onClick={() => { 
+                                onClick={() => {
                                     setElementHide(!elementHide)
                                     resetRegisterData()
                                     setAlertRegisPassword(false)
                                     setAlertName(false)
                                     setAlertRegisEmail(false)
-                                 }}
+                                }}
                                 className="ml-2 hover:text-pink-600 transition-all duration-200 hover:cursor-pointer"
                             >
                                 Sign in <i className="fa-solid fa-right-to-bracket"></i>
@@ -284,8 +286,8 @@ const RegisterPage = () => {
                         <p className="flex">
                             Don't have an account?
                             <span
-                                onClick={() => { 
-                                    setElementHide(!elementHide); 
+                                onClick={() => {
+                                    setElementHide(!elementHide);
                                     resetLoginData()
                                     setAlertLoginEmail(false)
                                 }}

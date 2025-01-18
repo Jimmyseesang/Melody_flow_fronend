@@ -6,6 +6,7 @@ const EditMusicForm = (props) => {
     const { isEditMusic, setIsEditMusic, music } = props
 
     const { apiHost, apiPort, token } = useContext(ProfileContext)
+    const API_URL = apiHost + '/api'
 
     const [title, setTitle] = useState()
     const [genre, setGenre] = useState([])
@@ -41,7 +42,7 @@ const EditMusicForm = (props) => {
                         </div>
                     </div>
                     <div>
-                        <div className="w-64 aspect-square bg-cover bg-center rounded-lg" style={{backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${music.coverUrl})`}}></div>
+                        <div className="w-64 aspect-square bg-cover bg-center rounded-lg" style={{backgroundImage: `url(${API_URL}/musicImg/${music.coverUrl})`}}></div>
                     </div>
                 </form>
             </div>

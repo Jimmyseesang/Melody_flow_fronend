@@ -12,9 +12,11 @@ export const ProfileProvider = ({children}) => {
     const apiHost = import.meta.env.VITE_SERVER_HOST
     const apiPort = import.meta.env.VITE_SERVER_PORT
 
+    const API_URL = apiHost + '/api'
+
     const fetchProfile = async () => {
         try {
-            const response = await axios.get(`http://${apiHost}:${apiPort}/user/getProfile`, {
+            const response = await axios.get(`${API_URL}/user/getProfile`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -23,7 +25,7 @@ export const ProfileProvider = ({children}) => {
             setProfile(response.data.user)
             if (response.data.user.profile) {
                 const encodedProfileImg = encodeURIComponent(response.data.user.profile)
-                setProfileImg(`http://${apiHost}:${apiPort}/profileImg/${encodedProfileImg }`)
+                setProfileImg(`${API_URL}/profileImg/${encodedProfileImg }`)
             }
         } catch (error) {
             console.error('Error fetching profile:', error)

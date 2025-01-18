@@ -10,9 +10,10 @@ const MusicLikeBoxComponent = (props) => {
     const { _id, title, artist, coverUrl } = props
 
     const { apiHost, apiPort, token, fetchProfile } = useContext(ProfileContext)
+    const API_URL = apiHost + '/api'
 
     const unLike = async () => {
-        const response = await axios.post(`http://${apiHost}:${apiPort}/music/unlikeMusic`, { musicId: _id }, {
+        const response = await axios.post(`${API_URL}/music/unlikeMusic`, { musicId: _id }, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -24,7 +25,7 @@ const MusicLikeBoxComponent = (props) => {
     return (
         <div className="bg-black-200/50 w-full h-1/5 flex border border-black-200">
             <div className="flex w-full p-2 items-center hover:bg-white/10 hover:cursor-pointer group" onClick={() => {navigate(`/like/${_id}`)}}>
-                <div style={{ backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${coverUrl})` }} className="h-full aspect-square bg-cover bg-center rounded"></div>
+                <div style={{ backgroundImage: `url(${API_URL}/musicImg/${coverUrl})` }} className="h-full aspect-square bg-cover bg-center rounded"></div>
                 <div className="flex flex-col justify-center w-full items-center text-white/90 group-hover:text-pink-600">
                     <div className="text-base">{title}</div>
                     <div className="text-sm">{artist}</div>

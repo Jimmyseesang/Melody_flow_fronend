@@ -10,6 +10,7 @@ const MusicListComponent = (props) => {
     const { title, artist, image, option, id } = props
 
     const { profile, fetchProfile, apiHost, apiPort, token } = useContext(ProfileContext)
+    const API_URL = apiHost + '/api'
 
     const [isHovered, setIsHovered] = useState(false);
     const [isLike, setIsLike] = useState()
@@ -45,7 +46,7 @@ const MusicListComponent = (props) => {
 
         const updateLike = async () => {
             if (!like) {
-                const response = await axios.post(`http://${apiHost}:${apiPort}/music/likeMusic`, { musicId: id }, {
+                const response = await axios.post(`${API_URL}/music/likeMusic`, { musicId: id }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -54,7 +55,7 @@ const MusicListComponent = (props) => {
                 console.log("like")
             }
             else {
-                const response = await axios.post(`http://${apiHost}:${apiPort}/music/unlikeMusic`, { musicId: id }, {
+                const response = await axios.post(`${API_URL}/music/unlikeMusic`, { musicId: id }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

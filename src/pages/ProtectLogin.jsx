@@ -8,21 +8,22 @@ const apiPORT = import.meta.env.VITE_SERVER_PORT
 const ProtectLogin = () => {
 
     const [permission, setPermission] = useState(null)
+    const { apiHost, apiPort, token } = useContext(ProfileContext)
+    const API_URL = apiHost + '/api'
+
 
     useEffect(() => {
         const checkPermisstion = async () => {
-            const token = localStorage.getItem('token')
-            if(!token) return setPermission(false)
 
             try {
-                const response = await axios.get(`http://${apiHost}:${apiPORT}/auth/userPage`, {
+                const response = await axios.get(`${API_URL}/auth/userPage`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
                 })
                 setPermission(response.data.isLogin)
             }
-            catch(err) {
+            catch (err) {
                 console.log('Failed to fetch permission')
                 setPermission(false)
             }
@@ -30,13 +31,13 @@ const ProtectLogin = () => {
 
         checkPermisstion()
 
-    },[])
+    }, [])
 
-    if(permission === null) {
+    if (permission === null) {
         return <></>
     }
 
-    return permission ? <Outlet/> : <Navigate to={'/register'}/>
+    return permission ? <Outlet /> : <Navigate to={'/register'} />
 
 }
 

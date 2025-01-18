@@ -8,6 +8,8 @@ const apiPort = import.meta.env.VITE_SERVER_PORT
 
 const NavBarComponent = () => {
 
+    const API_URL = apiHost + '/api'
+
     const location = useLocation()
     const currentPath = location.pathname.split('/')[1]
 
@@ -55,7 +57,7 @@ const NavBarComponent = () => {
                 return setBottonLogOut(false)
             }
 
-            const response = await axios.get(`http://${apiHost}:${apiPort}/auth/page`, {
+            const response = await axios.get(`${API_URL}/auth/page`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'

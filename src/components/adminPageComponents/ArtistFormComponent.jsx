@@ -7,6 +7,7 @@ const ArtistFormComponent = (props) => {
     const {alert, alertFail, getArtist} = props
 
     const {apiHost, apiPort, token} = useContext(ProfileContext)
+    const API_URL = apiHost + '/api'
 
     const [name, setName] = useState('')
     const [image, setImage] = useState()
@@ -17,7 +18,7 @@ const ArtistFormComponent = (props) => {
 
     const addArtist = async (dataForm) => {
         try {
-            await axios.post(`http://${apiHost}:${apiPort}/admin/addArtist`, dataForm, {
+            await axios.post(`${API_URL}/admin/addArtist`, dataForm, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

@@ -11,6 +11,7 @@ const ArtistListComponent = (props) => {
     const navigate = useNavigate()
 
     const { apiHost, apiPort, token } = useContext(ProfileContext)
+    const API_URL = apiHost + '/api'
     const { getAllMusic } = useContext(MusicContext)
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
@@ -22,7 +23,7 @@ const ArtistListComponent = (props) => {
     const handleDelete = async (artist) => {
         if (confirm("Do you want to delete artist?")) {
             const id = artist._id
-            const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteArtist/${id}`, {
+            const response = await axios.delete(`${API_URL}/admin/deleteArtist/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

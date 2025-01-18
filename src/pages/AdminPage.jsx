@@ -12,6 +12,7 @@ const AdminPage = () => {
 
     const { apiHost, apiPort, token } = useContext(ProfileContext)
     const { musics, getAllMusic } = useContext(MusicContext)
+    const API_URL = apiHost+'/api'
 
     // data variable
     const [title, setTitle] = useState('')
@@ -32,7 +33,7 @@ const AdminPage = () => {
     const [selectArtist, setSelectArtist] = useState(false)
 
     const getArtist = async () => {
-        const response = await axios.get(`http://${apiHost}:${apiPort}/admin/getArtistAll`, {
+        const response = await axios.get(`${API_URL}/admin/getArtistAll`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -113,7 +114,7 @@ const AdminPage = () => {
     const deleteMusic = async (id) => {
 
         if (confirm("Do you want to delete music?")) {
-            const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteMusic/${id}`, {
+            const response = await axios.delete(`${API_URL}/admin/deleteMusic/${id}`, {
                 headers: {
                     'authorization': `Bearer ${token}`,
                 }
@@ -144,7 +145,7 @@ const AdminPage = () => {
 
                 const token = localStorage.getItem('token')
 
-                const response = await axios.post(`http://${apiHost}:${apiPort}/admin/addMusic`, formData, {
+                const response = await axios.post(`${API_URL}/admin/addMusic`, formData, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }

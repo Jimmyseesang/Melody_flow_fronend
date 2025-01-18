@@ -17,7 +17,7 @@ const ArtistFormComponent = (props) => {
 
     const addArtist = async (dataForm) => {
         try {
-            await axios.post(`http://${apiHost}:${apiPort}/admin/addArtist`, dataForm, {
+            await axios.post(`https://melody-flow.online/admin/addArtist`, dataForm, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

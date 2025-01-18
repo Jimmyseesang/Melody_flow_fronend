@@ -33,7 +33,7 @@ const ProfilePage = () => {
         data.append('image', image)
 
         try {
-            const response = await axios.post(`http://${apiHost}:${apiPort}/user/uploadProfile`, data, {
+            const response = await axios.post(`https://melody-flow.online/user/uploadProfile`, data, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',

@@ -12,7 +12,7 @@ const PlaylistBoxComponent = (props) => {
     const {apiHost, apiPort, token} = useContext(ProfileContext)
 
     const fetchPlaylist = async () => {
-        const response = await axios.get(`http://${apiHost}:${apiPort}/playlist/getPlaylist/${_id}`, {
+        const response = await axios.get(`https://melody-flow.online/playlist/getPlaylist/${_id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -41,7 +41,7 @@ const PlaylistBoxComponent = (props) => {
     return (
         <div className="min-w-60 w-60 h-80 min-h-80 relative group hover:cursor-pointer" onClick={() => {handleClick()}}>
             <div className={`absolute w-full h-full rounded z-30 shadow-md p-2 flex flex-col transition-all group-hover:-translate-x-1 group-hover:-translate-y-1 border-2 border-zinc-700 ${color}`}>
-                <div className="w-full h-[150px] bg-white rounded bg-cover bg-center" style={{backgroundImage: `url(http://${apiHost}:${apiPort}/playlistImg/${encodeURIComponent(image)})`}}></div>
+                <div className="w-full h-[150px] bg-white rounded bg-cover bg-center" style={{backgroundImage: `url(https://melody-flow.online/playlistImg/${encodeURIComponent(image)})`}}></div>
                 <div className="flex-1 flex justify-center items-center truncate">
                     <h2 className="text-white font-bold text-xl group-hover:text-pink-600 transition-all duration-200">{title}</h2>
                 </div>

@@ -13,7 +13,7 @@ export const MusicProvider = ({ children }) => {
     const getAllMusic = async () => {
 
         try {
-            const response = await axios.get(`http://${apiHost}:${apiPort}/music/findAllMusic`);
+            const response = await axios.get(`https://melody-flow.online/music/findAllMusic`);
             setMusics(response.data.music);
         } catch (error) {
             console.error("Failed to fetch music:", error);

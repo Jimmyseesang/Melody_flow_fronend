@@ -81,7 +81,7 @@ const MusicPage = () => {
     const fetchArtist = async (artistId, musicId) => {
         try {
 
-            const response = await axios.get(`http://${apiHost}:${apiPort}/music/artistById/${artistId}`)
+            const response = await axios.get(`https://melody-flow.online/music/artistById/${artistId}`)
 
             const musics = response.data.musics
 
@@ -105,7 +105,7 @@ const MusicPage = () => {
 
         const fetchPlaylist = async (_id, musicId) => {
             try {
-                const response = await axios.get(`http://${apiHost}:${apiPort}/playlist/getPlaylist/${_id}`, {
+                const response = await axios.get(`https://melody-flow.online/playlist/getPlaylist/${_id}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

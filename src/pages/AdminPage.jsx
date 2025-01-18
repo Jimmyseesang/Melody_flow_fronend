@@ -32,7 +32,7 @@ const AdminPage = () => {
     const [selectArtist, setSelectArtist] = useState(false)
 
     const getArtist = async () => {
-        const response = await axios.get(`http://${apiHost}:${apiPort}/admin/getArtistAll`, {
+        const response = await axios.get(`https://melody-flow.online/admin/getArtistAll`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -113,7 +113,7 @@ const AdminPage = () => {
     const deleteMusic = async (id) => {
 
         if (confirm("Do you want to delete music?")) {
-            const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteMusic/${id}`, {
+            const response = await axios.delete(`https://melody-flow.online/admin/deleteMusic/${id}`, {
                 headers: {
                     'authorization': `Bearer ${token}`,
                 }
@@ -144,7 +144,7 @@ const AdminPage = () => {
 
                 const token = localStorage.getItem('token')
 
-                const response = await axios.post(`http://${apiHost}:${apiPort}/admin/addMusic`, formData, {
+                const response = await axios.post(`https://melody-flow.online/admin/addMusic`, formData, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }

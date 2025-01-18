@@ -14,7 +14,7 @@ export const ProfileProvider = ({children}) => {
 
     const fetchProfile = async () => {
         try {
-            const response = await axios.get(`http://${apiHost}:${apiPort}/user/getProfile`, {
+            const response = await axios.get(`https://melody-flow.online/user/getProfile`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -23,7 +23,7 @@ export const ProfileProvider = ({children}) => {
             setProfile(response.data.user)
             if (response.data.user.profile) {
                 const encodedProfileImg = encodeURIComponent(response.data.user.profile)
-                setProfileImg(`http://${apiHost}:${apiPort}/profileImg/${encodedProfileImg }`)
+                setProfileImg(`https://melody-flow.online/profileImg/${encodedProfileImg }`)
             }
         } catch (error) {
             console.error('Error fetching profile:', error)

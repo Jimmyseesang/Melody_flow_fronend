@@ -12,7 +12,7 @@ const ProtectRoute = () => {
     const checkIsAdmin = async (token) => {
         
         try{
-            const response = await axios.get(`http://${apiHost}:${apiPORT}/auth/page`,{
+            const response = await axios.get(`https://melody-flow.online/auth/page`,{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

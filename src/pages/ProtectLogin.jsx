@@ -15,7 +15,7 @@ const ProtectLogin = () => {
             if(!token) return setPermission(false)
 
             try {
-                const response = await axios.get(`http://${apiHost}:${apiPORT}/auth/userPage`, {
+                const response = await axios.get(`https://melody-flow.online/auth/userPage`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

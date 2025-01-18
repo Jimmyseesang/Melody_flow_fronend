@@ -110,7 +110,7 @@ const RegisterPage = () => {
 
             try {
 
-                await axios.post(`http://${apiHost}:${apiPort}/user/register`, data)
+                await axios.post(`https://melody-flow.online/user/register`, data)
                 setElementHide(!elementHide)
                 resetRegisterData()
 
@@ -139,7 +139,7 @@ const RegisterPage = () => {
 
             try{
 
-                const response = await axios.post(`http://${apiHost}:${apiPort}/user/login`,data)
+                const response = await axios.post(`https://melody-flow.online/user/login`,data)
                 localStorage.setItem('token', response.data.token)
                 navigate('/')
 

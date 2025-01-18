@@ -41,7 +41,7 @@ const EditMusicForm = (props) => {
                         </div>
                     </div>
                     <div>
-                        <div className="w-64 aspect-square bg-cover bg-center rounded-lg" style={{backgroundImage: `url(http://${apiHost}:${apiPort}/musicImg/${music.coverUrl})`}}></div>
+                        <div className="w-64 aspect-square bg-cover bg-center rounded-lg" style={{backgroundImage: `url(https://melody-flow.online/musicImg/${music.coverUrl})`}}></div>
                     </div>
                 </form>
             </div>

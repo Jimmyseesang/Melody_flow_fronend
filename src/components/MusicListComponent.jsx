@@ -45,7 +45,7 @@ const MusicListComponent = (props) => {
 
         const updateLike = async () => {
             if (!like) {
-                const response = await axios.post(`http://${apiHost}:${apiPort}/music/likeMusic`, { musicId: id }, {
+                const response = await axios.post(`https://melody-flow.online/music/likeMusic`, { musicId: id }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -54,7 +54,7 @@ const MusicListComponent = (props) => {
                 console.log("like")
             }
             else {
-                const response = await axios.post(`http://${apiHost}:${apiPort}/music/unlikeMusic`, { musicId: id }, {
+                const response = await axios.post(`https://melody-flow.online/music/unlikeMusic`, { musicId: id }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

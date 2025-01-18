@@ -55,7 +55,7 @@ const NavBarComponent = () => {
                 return setBottonLogOut(false)
             }
 
-            const response = await axios.get(`http://${apiHost}:${apiPort}/auth/page`, {
+            const response = await axios.get(`https://melody-flow.online/auth/page`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data'

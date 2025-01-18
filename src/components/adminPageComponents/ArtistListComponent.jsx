@@ -22,7 +22,7 @@ const ArtistListComponent = (props) => {
     const handleDelete = async (artist) => {
         if (confirm("Do you want to delete artist?")) {
             const id = artist._id
-            const response = await axios.delete(`http://${apiHost}:${apiPort}/admin/deleteArtist/${id}`, {
+            const response = await axios.delete(`https://melody-flow.online/admin/deleteArtist/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
